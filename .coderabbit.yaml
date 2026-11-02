@@ -1,16 +1,39 @@
-language: "ko-KR"
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+
+language: ko-KR
 early_access: false
+
+tone_instructions: >
+  친절하고 이해하기 쉬운 한국어로 리뷰하세요.
+  사소한 취향 차이보다 실제 버그, 유지보수성, 예외 처리, 보안을 우선하세요.
+  초급 개발자도 이해할 수 있도록 문제의 이유와 수정 방향을 짧고 구체적으로 설명하세요.
+  팀 컨벤션 위반은 공격적으로 표현하지 말고, 수정이 필요한 위치와 올바른 예시를 함께 제안하세요.
+
 reviews:
-  profile: "chill"
+  profile: chill
   request_changes_workflow: false
   high_level_summary: true
   poem: false
   review_status: true
-  collapse_walkthrough: false
+  changed_files_summary: true
+  collapse_walkthrough: true
+
+  auto_title_instructions: >
+    PR 제목은 '타입 : 제목' 형식으로 작성하세요.
+    허용 타입은 feat, add, fix, edit, refactor, design입니다.
+    예: 'feat : 로그인 화면 구현'
+
   auto_review:
     enabled: true
     drafts: false
     base_branches:
-      - "main"
+      - dev
+      - main
+    ignore_title_keywords:
+      - WIP
+      - DRAFT
+
+  # pre_merge_checks, path_filters, path_instructions는 앞에서 드린 내용을 그대로 이어서 붙입니다.
+
 chat:
   auto_reply: true
