@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Clean Sans";
+  src: local("Arial");
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: "Clean Sans", "Noto Sans KR", Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  font-family: "Clean Sans", "Noto Sans KR", Arial, sans-serif;
+  background: #f8fafc;
+  color: #1e293b;
+}
