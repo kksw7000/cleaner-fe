@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { mockPosts } from '../../data/mockData';
+import { mockPosts } from '@/data/mockData';
 
 export default function AdminPosts() {
   const [posts, setPosts] = useState(mockPosts);

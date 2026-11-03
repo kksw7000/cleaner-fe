@@ -17,3 +17,36 @@ body {
   background: #f8fafc;
   color: #1e293b;
 }
+
+.strip-left {
+  animation: photo-strip-left 55s linear infinite;
+}
+
+.strip-right {
+  animation: photo-strip-right 55s linear infinite;
+}
+
+@keyframes photo-strip-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes photo-strip-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .strip-left,
+  .strip-right {
+    animation: none;
+  }
+}

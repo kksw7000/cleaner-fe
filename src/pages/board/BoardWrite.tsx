@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuthStore } from '../store/authStore';
+import { useAuthStore } from '@/store/authStore';
 
-export default function CreatePost() {
+export default function BoardWrite() {
   const navigate = useNavigate();
   const { isLoggedIn, user } = useAuthStore();
   const [form, setForm] = useState({ title: '', content: '' });

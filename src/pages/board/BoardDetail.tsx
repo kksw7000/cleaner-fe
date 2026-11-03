@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { mockPosts } from '../data/mockData';
-import { useAuthStore } from '../store/authStore';
+import { mockPosts } from '@/data/mockData';
+import { useAuthStore } from '@/store/authStore';
 
 export default function BoardDetail() {
   const { id } = useParams();

@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { mockPosts } from '../data/mockData';
-import { useAuthStore } from '../store/authStore';
+import { mockPosts } from '@/data/mockData';
+import { useAuthStore } from '@/store/authStore';
 
-export default function Board() {
+export default function BoardList() {
   const { isLoggedIn } = useAuthStore();
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
@@ -19,7 +19,7 @@ export default function Board() {
           <div className="flex items-end justify-between">
             <div>
               <p className="text-xs font-semibold tracking-[0.2em] uppercase text-slate-400 mb-2">Community</p>
-              <h1 className="text-3xl md:text-4xl font-black" style={{ fontFamily: 'Outfit' }}>Board</h1>
+              <h1 className="text-3xl md:text-4xl font-black">게시판</h1>
             </div>
             <button
               onClick={() => isLoggedIn ? navigate('/board/new') : navigate('/login', { state: { from: '/board/new' } })}

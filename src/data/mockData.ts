@@ -10,15 +10,15 @@ export type ServiceCategory =
   | 'ESTATE_CLEANING';
 
 export const categoryLabels: Record<ServiceCategory, string> = {
-  MATTRESS: 'Mattress',
-  SOFA_CARPET: 'Sofa & Carpet',
-  MOVE_IN: 'Move-in',
-  APPLIANCE: 'Appliance',
-  CONSTRUCTION: 'Post-construction',
-  COMMERCIAL: 'Commercial',
-  WAX_COATING: 'Wax Coating',
-  REGULAR_CLEANING: 'Regular Cleaning',
-  ESTATE_CLEANING: 'Estate & Organizing',
+  MATTRESS: '매트리스',
+  SOFA_CARPET: '소파·카페트',
+  MOVE_IN: '입주 청소',
+  APPLIANCE: '에어컨·세탁기',
+  CONSTRUCTION: '준공 청소',
+  COMMERCIAL: '상업 공간 청소',
+  WAX_COATING: '왁스 코팅',
+  REGULAR_CLEANING: '정기 청소',
+  ESTATE_CLEANING: '유품 정리',
 };
 
 export const categoryIcons: Record<ServiceCategory, string> = {
@@ -87,11 +87,11 @@ export interface BoardPost {
 }
 
 export const mockPosts: BoardPost[] = [
-  { id: 1, title: 'How often should I get my sofa professionally cleaned?', content: 'I have two dogs and a fabric sofa. The cleaning team did an amazing job last month — wanted to share my experience and ask how often others get this done.\n\nThey used hot water extraction and the sofa looks brand new. No more pet odors!', writer: 'Sophie K.', viewCount: 142, createdAt: '2026-09-15' },
-  { id: 2, title: 'Move-in cleaning was worth every penny', content: "Just moved into a new apartment and booked the move-in full clean package. They arrived on time and spent 4 hours going through every corner.\n\nHighly recommend to anyone moving into a previously occupied apartment.", writer: 'Mark T.', viewCount: 98, createdAt: '2026-09-12' },
-  { id: 3, title: 'Tips for maintaining a clean home between professional visits', content: "After getting a weekly clean set up, I started doing small daily habits to keep things tidy in between. Here are my top 5 tips...", writer: 'Jenna L.', viewCount: 213, createdAt: '2026-09-10' },
-  { id: 4, title: 'Air conditioner cleaning — before and after', content: "The difference is shocking. My AC was making a musty smell for months. After the cleaning, the air is noticeably fresher and the unit runs more quietly.", writer: 'Chris W.', viewCount: 87, createdAt: '2026-09-08' },
-  { id: 5, title: 'Question: Do I need to be home during the service?', content: "I work 9-5 and was wondering if the cleaning team can access the apartment without me being there. Has anyone done this? Is there a lockbox option?", writer: 'Alex M.', viewCount: 55, createdAt: '2026-09-06' },
+  { id: 1, title: '소파 전문 청소는 얼마나 자주 해야 하나요?', content: '반려견 두 마리와 패브릭 소파를 함께 사용하고 있어요. 지난달에 청소를 맡겼는데 정말 만족스러워서 경험을 나누고, 다른 분들은 얼마나 자주 청소하시는지 궁금합니다.\n\n고온 스팀 방식으로 청소해 주셨고 소파가 새것처럼 깨끗해졌어요. 반려동물 냄새도 사라졌습니다!', writer: '소피', viewCount: 142, createdAt: '2026-09-15' },
+  { id: 2, title: '입주 청소, 비용이 아깝지 않았어요', content: '새 아파트로 이사하면서 입주 청소를 예약했어요. 약속한 시간에 오셔서 네 시간 동안 구석구석 꼼꼼하게 청소해 주셨습니다.\n\n이전 거주자가 있던 집으로 이사하신다면 적극 추천합니다.', writer: '마크', viewCount: 98, createdAt: '2026-09-12' },
+  { id: 3, title: '전문 청소 후 깨끗한 집을 유지하는 방법', content: '정기 청소를 시작한 뒤 청소 방문 사이에도 집을 깔끔하게 유지하려고 매일 작은 습관을 실천하고 있어요. 제가 추천하는 다섯 가지 방법을 소개합니다.', writer: '제나', viewCount: 213, createdAt: '2026-09-10' },
+  { id: 4, title: '에어컨 청소 전후, 확실히 달라졌어요', content: '몇 달 동안 에어컨에서 퀴퀴한 냄새가 났는데 청소 후 공기가 훨씬 상쾌해졌어요. 작동 소음도 줄어들어 정말 만족합니다.', writer: '크리스', viewCount: 87, createdAt: '2026-09-08' },
+  { id: 5, title: '청소하는 동안 집에 있어야 하나요?', content: '평일 오전 9시부터 오후 5시까지 일하고 있어서 집에 없어도 청소가 가능한지 궁금합니다. 비밀번호 보관함을 이용해 서비스를 받아보신 분이 계실까요?', writer: '알렉스', viewCount: 55, createdAt: '2026-09-06' },
 ];
 
 export interface AdminUser {

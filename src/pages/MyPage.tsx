@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../store/authStore';
-import { mockReservations, type ReservationStatus } from '../data/mockData';
+import { useAuthStore } from '@/store/authStore';
+import { mockReservations, type ReservationStatus } from '@/data/mockData';
 
 const statusColors: Record<ReservationStatus, string> = {
   PENDING: 'bg-amber-900/30 text-amber-400 border border-amber-700/30',

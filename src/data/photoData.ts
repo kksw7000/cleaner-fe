@@ -1,4 +1,4 @@
-import type { ServiceCategory } from './mockData';
+import type { ServiceCategory } from '@/data/mockData';
 
 // Curated Unsplash photo IDs per category
 export const categoryPhotos: Record<ServiceCategory, string[]> = {

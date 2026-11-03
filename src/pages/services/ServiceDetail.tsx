@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { services, categoryLabels, categoryIcons } from '../data/mockData';
-import { categoryPhotos } from '../data/photoData';
-import { useAuthStore } from '../store/authStore';
+import { services, categoryLabels, categoryIcons } from '@/data/mockData';
+import { categoryPhotos } from '@/data/photoData';
+import { useAuthStore } from '@/store/authStore';
 
 export default function ServiceDetail() {
   const { id } = useParams();

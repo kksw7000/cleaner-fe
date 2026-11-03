@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { services as initialServices, categoryLabels, categoryIcons, type ServiceProduct, type ServiceCategory } from '../../data/mockData';
+import { services as initialServices, categoryLabels, categoryIcons, type ServiceProduct, type ServiceCategory } from '@/data/mockData';
 
 const categories = Object.keys(categoryLabels) as ServiceCategory[];
 

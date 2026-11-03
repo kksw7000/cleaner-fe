@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../store/authStore';
+import { useAuthStore } from '@/store/authStore';
+import Logo from '@/components/Logo';
 
-export default function SignUp() {
+export default function Signup() {
   const navigate = useNavigate();
   const { login } = useAuthStore();
   const [form, setForm] = useState({ email: '', password: '', confirm: '', nickname: '', phone: '' });
@@ -11,7 +12,7 @@ export default function SignUp() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (form.password !== form.confirm) { setError('Passwords do not match.'); return; }
-    login(form.email);
+    login(form.email, 'USER', form.nickname);
     navigate('/');
   };
 
@@ -19,12 +20,7 @@ export default function SignUp() {
     <div className="min-h-screen bg-[#0B1F3A] flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center gap-2.5 mb-8">
-            <div className="w-9 h-9 rounded bg-white/10 border border-white/20 flex items-center justify-center">
-              <span className="text-white font-black" style={{ fontFamily: 'Outfit' }}>C</span>
-            </div>
-            <span className="font-bold text-xl text-white tracking-wide" style={{ fontFamily: 'Outfit' }}>CLEANER</span>
-          </Link>
+          <Logo className="mb-8" />
           <h1 className="text-2xl font-black text-white" style={{ fontFamily: 'Outfit' }}>Create Account</h1>
           <p className="text-slate-400 text-sm mt-1">Start booking professional cleaning services</p>
         </div>

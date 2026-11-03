@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { categoryLabels, categoryIcons, type ServiceCategory } from '../data/mockData';
-import { slideshowPhotos } from '../data/photoData';
+import { categoryLabels, categoryIcons, type ServiceCategory } from '@/data/mockData';
+import { slideshowPhotos } from '@/data/photoData';
 
 const categories = Object.keys(categoryLabels) as ServiceCategory[];
 
