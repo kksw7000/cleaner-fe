@@ -14,25 +14,25 @@ export default function BoardList() {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="bg-[#0B1F3A] text-white py-14">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <div className="flex items-end justify-between">
-            <div>
-              <p className="text-xs font-semibold tracking-[0.2em] uppercase text-slate-400 mb-2">Community</p>
-              <h1 className="text-3xl md:text-4xl font-black">게시판</h1>
-            </div>
+      <div className="min-h-[340px] bg-[#0B1F3A] text-white flex items-center">
+        <div className="relative max-w-7xl w-full mx-auto px-4 sm:px-6 py-16 flex flex-col items-center justify-center gap-6">
+          <div className="text-center">
+            <p className="text-xs font-semibold tracking-[0.2em] text-slate-400 mb-3">커뮤니티</p>
+            <h1 className="text-4xl md:text-5xl font-black">게시판</h1>
+          </div>
+          <div className="md:absolute md:right-6 md:top-1/2 md:-translate-y-1/2">
             <button
               onClick={() => isLoggedIn ? navigate('/board/new') : navigate('/login', { state: { from: '/board/new' } })}
               className="px-5 py-2 bg-white text-[#0B1F3A] font-bold rounded text-sm hover:bg-slate-100 transition-colors"
             >
-              + New Post
+              + 새 글 작성
             </button>
           </div>
         </div>
       </div>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
-        <input type="text" placeholder="Search posts..." value={search} onChange={(e) => setSearch(e.target.value)} className="w-full border border-slate-200 rounded px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1F3A] mb-6" />
+        <input type="text" placeholder="게시글 검색..." value={search} onChange={(e) => setSearch(e.target.value)} className="w-full border border-slate-200 rounded px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1F3A] mb-6" />
 
         <div className="divide-y divide-slate-100">
           {filtered.map((post) => (
@@ -48,7 +48,7 @@ export default function BoardList() {
               </div>
             </Link>
           ))}
-          {filtered.length === 0 && <div className="text-center py-16 text-slate-400">No posts found.</div>}
+          {filtered.length === 0 && <div className="text-center py-16 text-slate-400">게시글이 없습니다.</div>}
         </div>
       </div>
     </div>

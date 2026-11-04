@@ -17,8 +17,8 @@ export default function ServiceDetail() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <p className="text-slate-500 mb-4">Service not found.</p>
-          <Link to="/services" className="text-[#0B1F3A] hover:underline font-medium">← Back to Services</Link>
+          <p className="text-slate-500 mb-4">서비스를 찾을 수 없습니다.</p>
+          <Link to="/services" className="text-[#0B1F3A] hover:underline font-medium">← 서비스 목록으로</Link>
         </div>
       </div>
     );
@@ -44,12 +44,12 @@ export default function ServiceDetail() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h2 className="text-2xl font-black text-[#0B1F3A] mb-2" style={{ fontFamily: 'Outfit' }}>Reservation Submitted</h2>
-          <p className="text-slate-500 mb-2">Your booking for <strong>{service.name}</strong> is <span className="text-amber-600 font-semibold">PENDING</span> review.</p>
-          <p className="text-slate-400 text-sm mb-8">We'll confirm within 24 hours. Track status on My Page.</p>
+          <h2 className="text-2xl font-black text-[#0B1F3A] mb-2">예약 신청이 완료되었습니다</h2>
+          <p className="text-slate-500 mb-2"><strong>{service.name}</strong> 예약이 확인 대기 중입니다.</p>
+          <p className="text-slate-400 text-sm mb-8">24시간 이내에 예약을 확인해 드립니다. 마이페이지에서 진행 상황을 확인하세요.</p>
           <div className="flex gap-3 justify-center">
-            <Link to="/mypage" className="px-6 py-2.5 bg-[#0B1F3A] text-white text-sm font-semibold rounded hover:bg-[#060F1E] transition-colors">My Page</Link>
-            <Link to="/services" className="px-6 py-2.5 border border-slate-200 text-slate-600 text-sm rounded hover:border-slate-400 transition-colors">More Services</Link>
+            <Link to="/mypage" className="px-6 py-2.5 bg-[#0B1F3A] text-white text-sm font-semibold rounded hover:bg-[#060F1E] transition-colors">마이페이지</Link>
+            <Link to="/services" className="px-6 py-2.5 border border-slate-200 text-slate-600 text-sm rounded hover:border-slate-400 transition-colors">다른 서비스 보기</Link>
           </div>
         </div>
       </div>
@@ -68,7 +68,7 @@ export default function ServiceDetail() {
         <div className="absolute inset-0 bg-gradient-to-r from-[#0B1F3A] to-transparent" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 h-full flex flex-col justify-end pb-8">
           <nav className="text-xs text-slate-400 mb-3 flex items-center gap-2">
-            <Link to="/services" className="hover:text-white">Services</Link>
+            <Link to="/services" className="hover:text-white">서비스</Link>
             <span>/</span>
             <Link to={`/services/${service.category.toLowerCase()}`} className="hover:text-white">{categoryLabels[service.category]}</Link>
             <span>/</span>
@@ -89,11 +89,11 @@ export default function ServiceDetail() {
             <p className="text-slate-600 leading-relaxed text-base mb-6">{service.description}</p>
             <div className="flex items-baseline gap-2 mb-8">
               <span className="text-4xl font-black text-[#0B1F3A]" style={{ fontFamily: 'Outfit' }}>₩{service.price.toLocaleString()}</span>
-              <span className="text-slate-400 text-sm">/ visit</span>
+              <span className="text-slate-400 text-sm">/ 1회</span>
             </div>
 
             {/* Sample photos */}
-            <h3 className="font-bold text-[#0B1F3A] mb-3 text-sm uppercase tracking-wider" style={{ fontFamily: 'Outfit' }}>Work Photos</h3>
+            <h3 className="font-bold text-[#0B1F3A] mb-3 text-sm tracking-wider">작업 사진</h3>
             <div className="grid grid-cols-3 gap-2 mb-4">
               {photos.slice(0, 6).map((pid, i) => (
                 <div key={i} className="aspect-square overflow-hidden rounded bg-slate-100">
@@ -102,47 +102,47 @@ export default function ServiceDetail() {
               ))}
             </div>
             <Link to={`/services/${service.category.toLowerCase()}`} className="text-sm text-[#0B1F3A] hover:underline font-medium">
-              View all {categoryLabels[service.category]} photos →
+              {categoryLabels[service.category]} 작업 사진 전체 보기 →
             </Link>
           </div>
 
           {/* Right — booking */}
           <div className="lg:col-span-2">
             <div className="sticky top-20 bg-[#F8FAFC] border border-slate-200 rounded-xl p-6">
-              <h2 className="text-lg font-black text-[#0B1F3A] mb-5" style={{ fontFamily: 'Outfit' }}>Book This Service</h2>
+              <h2 className="text-lg font-black text-[#0B1F3A] mb-5">서비스 예약</h2>
               {!isLoggedIn && (
                 <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-700">
-                  <Link to="/login" className="font-semibold underline">Log in</Link> to make a reservation.
+                  예약하려면 <Link to="/login" className="font-semibold underline">로그인</Link>해 주세요.
                 </div>
               )}
               <form onSubmit={handleBook} className="space-y-4">
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-xs font-medium text-slate-500 block mb-1">Date</label>
+                    <label className="text-xs font-medium text-slate-500 block mb-1">날짜</label>
                     <input type="date" required min={new Date().toISOString().split('T')[0]} value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} className="w-full border border-slate-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1F3A]" />
                   </div>
                   <div>
-                    <label className="text-xs font-medium text-slate-500 block mb-1">Time</label>
+                    <label className="text-xs font-medium text-slate-500 block mb-1">시간</label>
                     <select value={form.time} onChange={(e) => setForm({ ...form, time: e.target.value })} className="w-full border border-slate-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1F3A] bg-white">
                       {['08:00','09:00','10:00','11:00','13:00','14:00','15:00','16:00'].map((t) => <option key={t}>{t}</option>)}
                     </select>
                   </div>
                 </div>
                 <div>
-                  <label className="text-xs font-medium text-slate-500 block mb-1">Address</label>
-                  <input type="text" required placeholder="123 Main St, Seoul" value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} className="w-full border border-slate-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1F3A]" />
+                  <label className="text-xs font-medium text-slate-500 block mb-1">주소</label>
+                  <input type="text" required placeholder="주소를 입력하세요" value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} className="w-full border border-slate-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1F3A]" />
                 </div>
                 <div>
-                  <label className="text-xs font-medium text-slate-500 block mb-1">Notes (optional)</label>
-                  <textarea rows={3} placeholder="Special requests..." value={form.memo} onChange={(e) => setForm({ ...form, memo: e.target.value })} className="w-full border border-slate-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1F3A] resize-none" />
+                  <label className="text-xs font-medium text-slate-500 block mb-1">요청 사항 (선택)</label>
+                  <textarea rows={3} placeholder="추가 요청 사항을 입력하세요." value={form.memo} onChange={(e) => setForm({ ...form, memo: e.target.value })} className="w-full border border-slate-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1F3A] resize-none" />
                 </div>
                 <div className="border-t border-slate-200 pt-4 flex items-center justify-between">
                   <div>
-                    <div className="text-xs text-slate-400">Total</div>
+                    <div className="text-xs text-slate-400">총 금액</div>
                     <div className="font-black text-[#0B1F3A]" style={{ fontFamily: 'Outfit' }}>₩{service.price.toLocaleString()}</div>
                   </div>
                   <button type="submit" className="px-6 py-2.5 bg-[#0B1F3A] text-white font-bold rounded text-sm hover:bg-[#060F1E] transition-colors">
-                    {isLoggedIn ? 'Confirm Booking' : 'Login to Book'}
+                    {isLoggedIn ? '예약 신청' : '로그인 후 예약'}
                   </button>
                 </div>
               </form>

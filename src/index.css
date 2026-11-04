@@ -26,6 +26,11 @@ body {
   animation: photo-strip-right 55s linear infinite;
 }
 
+.strip-left:hover,
+.strip-right:hover {
+  animation-play-state: paused;
+}
+
 @keyframes photo-strip-left {
   from {
     transform: translateX(0);

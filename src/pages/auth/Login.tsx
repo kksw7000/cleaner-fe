@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '@/store/authStore';
-import Logo from '@/components/Logo';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -28,7 +27,6 @@ export default function Login() {
     <div className="min-h-screen bg-[#0B1F3A] flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <Logo className="mb-8" />
           <h1 className="text-2xl font-black text-white">로그인</h1>
           <p className="text-slate-400 text-sm mt-1">예약 내역과 계정 정보를 확인하세요.</p>
         </div>

@@ -6,15 +6,15 @@ import { categoryPhotos } from '@/data/photoData';
 const PHOTOS_PER_PAGE = 9;
 
 const categoryDescriptions: Record<ServiceCategory, string> = {
-  MATTRESS: 'Professional mattress sanitization using UV sterilization and deep steam cleaning. We eliminate dust mites, allergens, bacteria, and odors — restoring your mattress to like-new condition.',
-  SOFA_CARPET: 'High-pressure steam cleaning and hot water extraction for all types of fabric sofas, sectionals, and wall-to-wall carpets. No residue. No odors.',
-  MOVE_IN: 'Comprehensive top-to-bottom cleaning before or after your move. Every surface, fixture, cabinet, and corner is thoroughly cleaned so you can settle in with confidence.',
-  APPLIANCE: 'Full disassembly, antibacterial wash, and careful reassembly for split and wall-mounted air conditioners and washing machine drums. Noticeably cleaner air from day one.',
-  CONSTRUCTION: 'Post-construction cleanups require specialized techniques for concrete dust, paint splatter, adhesive residue, and fine particulate — we handle all of it completely.',
-  COMMERCIAL: 'Regular or one-time professional cleaning for offices, meeting rooms, retail floors, lobbies, and commercial facilities of any scale.',
-  WAX_COATING: 'Professional wax and coating application for hardwood and tile floors. Restores gloss, protects the surface, and extends floor life significantly.',
-  REGULAR_CLEANING: 'Scheduled home maintenance cleaning on your terms — weekly, biweekly, or monthly. Covering all living areas, kitchen, and bathrooms systematically.',
-  ESTATE_CLEANING: 'Respectful, thorough estate cleaning and organization. Ideal for downsizing, sorting a loved one\'s belongings, or clearing a property completely.',
+  MATTRESS: '자외선 살균과 고온 스팀으로 매트리스의 진드기, 알레르기 유발 물질, 세균과 냄새를 제거해 새것처럼 쾌적하게 관리합니다.',
+  SOFA_CARPET: '고압 스팀과 온수 추출 방식으로 다양한 패브릭 소파와 카페트의 오염을 말끔히 제거합니다.',
+  MOVE_IN: '이사 전후 집 안의 모든 표면과 설비, 수납장, 구석까지 꼼꼼하게 청소해 드립니다.',
+  APPLIANCE: '벽걸이·스탠드 에어컨과 세탁기를 분해해 살균 세척한 뒤 꼼꼼하게 재조립합니다.',
+  CONSTRUCTION: '공사 후 남은 콘크리트 먼지와 페인트 자국, 접착제 잔여물과 미세 먼지를 전문적으로 제거합니다.',
+  COMMERCIAL: '사무실, 회의실, 매장, 로비 등 다양한 규모의 상업 공간을 정기 또는 일회성으로 청소합니다.',
+  WAX_COATING: '마루와 타일 바닥에 왁스 코팅을 시공해 광택을 되살리고 표면을 보호합니다.',
+  REGULAR_CLEANING: '주간·격주·월간 일정에 맞춰 거실, 주방, 욕실 등 생활 공간을 정기적으로 관리합니다.',
+  ESTATE_CLEANING: '유품과 생활용품을 세심하게 분류·정리하고 공간을 깨끗하게 정돈해 드립니다.',
 };
 
 interface CategoryPageProps {
@@ -32,8 +32,8 @@ export default function CategoryPage({ categoryOverride }: CategoryPageProps) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <p className="text-slate-500 mb-4">Category not found.</p>
-          <Link to="/services" className="text-[#0B1F3A] hover:underline font-medium">← Back to Services</Link>
+          <p className="text-slate-500 mb-4">서비스 카테고리를 찾을 수 없습니다.</p>
+          <Link to="/services" className="text-[#0B1F3A] hover:underline font-medium">← 서비스 목록으로</Link>
         </div>
       </div>
     );
@@ -68,7 +68,7 @@ export default function CategoryPage({ categoryOverride }: CategoryPageProps) {
       )}
 
       {/* Hero */}
-      <div className="relative bg-[#0B1F3A] text-white overflow-hidden">
+      <div className="relative min-h-[340px] bg-[#0B1F3A] text-white overflow-hidden flex items-center">
         <div className="absolute inset-0">
           <img
             src={`https://images.unsplash.com/${photos[0]}?w=1400&h=500&fit=crop&auto=format`}
@@ -77,17 +77,17 @@ export default function CategoryPage({ categoryOverride }: CategoryPageProps) {
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[#0B1F3A] via-[#0B1F3A]/70 to-transparent" />
         </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-16">
+        <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 py-16">
           <nav className="text-xs text-slate-400 mb-6 flex items-center gap-2">
-            <Link to="/" className="hover:text-white transition-colors">Home</Link>
+            <Link to="/" className="hover:text-white transition-colors">홈</Link>
             <span>/</span>
-            <Link to="/services" className="hover:text-white transition-colors">Services</Link>
+            <Link to="/services" className="hover:text-white transition-colors">서비스</Link>
             <span>/</span>
             <span className="text-white">{categoryLabels[catKey]}</span>
           </nav>
           <div className="flex items-center gap-3 mb-4">
             <span className="text-3xl">{categoryIcons[catKey]}</span>
-            <p className="text-xs font-semibold tracking-[0.2em] uppercase text-slate-400">Cleaning Service</p>
+            <p className="text-xs font-semibold tracking-[0.2em] text-slate-400">청소 서비스</p>
           </div>
           <h1 className="text-4xl md:text-5xl font-black mb-4" style={{ fontFamily: 'Outfit' }}>{categoryLabels[catKey]}</h1>
           <p className="text-slate-300 max-w-2xl leading-relaxed text-sm md:text-base">{categoryDescriptions[catKey]}</p>
@@ -106,7 +106,7 @@ export default function CategoryPage({ categoryOverride }: CategoryPageProps) {
                 </div>
                 <div className="shrink-0 text-right">
                   <div className="font-black text-[#0B1F3A] text-sm" style={{ fontFamily: 'Outfit' }}>₩{s.price.toLocaleString()}</div>
-                  <Link to={`/services/detail/${s.id}`} className="text-xs text-slate-400 hover:text-[#0B1F3A] transition-colors mt-1 block">Book →</Link>
+                  <Link to={`/services/detail/${s.id}`} className="text-xs text-slate-400 hover:text-[#0B1F3A] transition-colors mt-1 block">예약하기 →</Link>
                 </div>
               </div>
             ))}
@@ -116,8 +116,8 @@ export default function CategoryPage({ categoryOverride }: CategoryPageProps) {
         {/* Photo grid heading */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-2xl font-black text-[#0B1F3A]" style={{ fontFamily: 'Outfit' }}>Work Photos</h2>
-            <p className="text-slate-400 text-sm mt-1">{photos.length} photos · Page {page} of {totalPages}</p>
+            <h2 className="text-2xl font-black text-[#0B1F3A]">작업 사진</h2>
+            <p className="text-slate-400 text-sm mt-1">사진 {photos.length}장 · {totalPages}페이지 중 {page}페이지</p>
           </div>
         </div>
 
@@ -131,7 +131,7 @@ export default function CategoryPage({ categoryOverride }: CategoryPageProps) {
             >
               <img
                 src={`https://images.unsplash.com/${id}?w=500&h=500&fit=crop&auto=format`}
-                alt={`${categoryLabels[catKey]} work photo ${(page - 1) * PHOTOS_PER_PAGE + i + 1}`}
+                alt={`${categoryLabels[catKey]} 작업 사진 ${(page - 1) * PHOTOS_PER_PAGE + i + 1}`}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-[#0B1F3A]/0 group-hover:bg-[#0B1F3A]/20 transition-colors flex items-center justify-center">
@@ -154,7 +154,7 @@ export default function CategoryPage({ categoryOverride }: CategoryPageProps) {
               disabled={page === 1}
               className="px-5 py-2 border border-slate-200 rounded text-sm font-medium text-slate-600 hover:border-[#0B1F3A] hover:text-[#0B1F3A] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
             >
-              ← Previous
+              ← 이전
             </button>
             <div className="flex gap-1">
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
@@ -172,14 +172,14 @@ export default function CategoryPage({ categoryOverride }: CategoryPageProps) {
               disabled={page === totalPages}
               className="px-5 py-2 border border-slate-200 rounded text-sm font-medium text-slate-600 hover:border-[#0B1F3A] hover:text-[#0B1F3A] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
             >
-              Next →
+              다음 →
             </button>
           </div>
         )}
 
         {/* Category nav */}
         <div className="mt-16 pt-10 border-t border-slate-100">
-          <h3 className="text-sm font-bold text-[#0B1F3A] mb-4 uppercase tracking-wider" style={{ fontFamily: 'Outfit' }}>Other Services</h3>
+          <h3 className="text-sm font-bold text-[#0B1F3A] mb-4 tracking-wider">다른 서비스</h3>
           <div className="flex flex-wrap gap-2">
             {Object.entries(categoryLabels)
               .filter(([key]) => key !== catKey)
@@ -198,10 +198,10 @@ export default function CategoryPage({ categoryOverride }: CategoryPageProps) {
 
       {/* CTA */}
       <div className="bg-[#0B1F3A] text-white py-14 mt-8 text-center">
-        <h2 className="text-2xl md:text-3xl font-black mb-3" style={{ fontFamily: 'Outfit' }}>Ready to book {categoryLabels[catKey]}?</h2>
-        <p className="text-slate-300 mb-6 text-sm">Professional service, proven results. Contact us today.</p>
+        <h2 className="text-2xl md:text-3xl font-black mb-3">{categoryLabels[catKey]} 서비스를 예약하시겠어요?</h2>
+        <p className="text-slate-300 mb-6 text-sm">검증된 전문 서비스로 깨끗한 공간을 만들어 드립니다.</p>
         <Link to="/reservation" className="inline-flex items-center gap-2 px-7 py-3.5 bg-white text-[#0B1F3A] font-bold rounded text-sm hover:bg-slate-100 transition-colors tracking-wide">
-          BOOK NOW
+          지금 예약하기
         </Link>
       </div>
     </div>

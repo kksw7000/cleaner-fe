@@ -183,25 +183,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ── CTA ───────────────────────────────── */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="bg-[#0B1F3A] rounded-2xl p-12 md:p-16 text-white flex flex-col md:flex-row items-center justify-between gap-8">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-black mb-3">전문 청소 서비스가 필요하신가요?</h2>
-              <p className="text-slate-300">무료 상담과 견적을 받아보세요.</p>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-3 shrink-0">
-              <Link to={bookingPath} state={bookingState} className="px-8 py-4 bg-white text-[#0B1F3A] font-bold rounded text-sm hover:bg-slate-100 transition-colors text-center tracking-wide">
-                예약하기
-              </Link>
-              <Link to="/services" className="px-8 py-4 border border-white/30 text-white font-medium rounded text-sm hover:bg-white/5 transition-colors text-center">
-                서비스 보기
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }

@@ -64,7 +64,6 @@ export default function Reservation() {
             </svg>
           </div>
           <h2 className="text-2xl font-black text-[#0B1F3A] mb-2">예약 신청이 완료되었습니다!</h2>
-          <p className="text-slate-500 mb-6 text-sm">24시간 이내에 연락드려 예약을 확정하고 자세한 견적을 안내해 드리겠습니다.</p>
           <div className="flex gap-3 justify-center">
             <Link to="/" className="px-6 py-2.5 bg-[#0B1F3A] text-white text-sm font-semibold rounded hover:bg-[#060F1E] transition-colors">홈으로</Link>
             <Link to="/services" className="px-6 py-2.5 border border-slate-200 text-slate-600 text-sm rounded hover:border-slate-400 transition-colors">서비스 둘러보기</Link>
@@ -76,7 +75,7 @@ export default function Reservation() {
 
   return (
     <div className="bg-white">
-      <div className="bg-[#0B1F3A] text-white py-16">
+      <div className="min-h-[340px] bg-[#0B1F3A] text-white flex items-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <p className="text-xs font-semibold tracking-[0.2em] text-slate-400 mb-3">서비스 신청</p>
           <h1 className="text-4xl md:text-5xl font-black">청소 서비스 예약</h1>

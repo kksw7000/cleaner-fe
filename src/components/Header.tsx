@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '@/store/authStore';
 import { categoryLabels, type ServiceCategory } from '@/data/mockData';
-import Logo from './Logo';
 
 const categories = Object.keys(categoryLabels) as ServiceCategory[];
 
@@ -38,11 +37,9 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-[#0B1F3A] border-b border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        <Logo onClick={() => setMenuOpen(false)} />
-
         {/* 데스크톱 메뉴 */}
         <nav className="hidden lg:flex items-center gap-7">
-          <Link to="/" className={navLinkCls('/')}>홈</Link>
+          <Link to="/" className={navLinkCls('/')}>정오클린케어</Link>
           {/* 청소 서비스 메뉴 */}
           <div className="relative" ref={dropdownRef}>
             <button
@@ -116,7 +113,7 @@ export default function Header() {
       {/* 모바일 메뉴 */}
       {menuOpen && (
         <div className="lg:hidden bg-[#060F1E] border-t border-white/10 px-4 py-5 space-y-4 text-sm">
-          <Link to="/" onClick={() => setMenuOpen(false)} className="block text-slate-300 hover:text-white">홈</Link>
+          <Link to="/" onClick={() => setMenuOpen(false)} className="block text-slate-300 hover:text-white">정오클린케어</Link>
           <div>
             <p className="text-slate-500 text-xs uppercase tracking-wider mb-2">청소 서비스</p>
             <div className="space-y-2 pl-2">
