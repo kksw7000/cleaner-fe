@@ -39,7 +39,7 @@ export default function Login() {
             {[{ name: 'Google', color: '#4285F4' }, { name: 'Naver', color: '#03C75A' }, { name: 'Kakao', color: '#FEE500' }].map((p) => (
               <button key={p.name} onClick={() => handleSocial(p.name)} className="w-full flex items-center justify-center gap-3 py-3 border border-white/10 rounded-lg text-sm text-slate-300 hover:bg-white/5 hover:text-white transition-colors font-medium">
                 <span className="w-2 h-2 rounded-full" style={{ backgroundColor: p.color }} />
-                {p.name}(으)로 로그인
+                {p.name}로 로그인
               </button>
             ))}
           </div>

@@ -12,7 +12,7 @@ export default function Signup() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (form.password !== form.confirm) { setError('Passwords do not match.'); return; }
-    login(form.email, 'USER', form.nickname);
+    login(form.email, 'USER', form.nickname.trim());
     navigate('/');
   };
 

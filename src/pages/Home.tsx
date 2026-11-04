@@ -51,11 +51,11 @@ function OnSiteStrip() {
 
       {/* 첫 번째 사진 행은 왼쪽으로 이동하고, 이미지 복제로 반복 구간을 자연스럽게 연결합니다. */}
       <div className="strip-track overflow-hidden mb-3">
-        <div className="strip-left flex gap-4" style={{ width: 'max-content' }}>
+        <div className="strip-left flex" style={{ width: 'max-content' }}>
           {r1.map((id, i) => (
             <div
               key={`r1-${i}`}
-              className="shrink-0 overflow-hidden rounded-md bg-slate-800"
+              className="mr-4 shrink-0 overflow-hidden rounded-md bg-slate-800"
               style={{ width: '220px', height: '220px' }}
             >
               <img
@@ -71,11 +71,11 @@ function OnSiteStrip() {
 
       {/* 두 번째 사진 행은 첫 번째 행과 반대 방향인 오른쪽으로 이동합니다. */}
       <div className="strip-track overflow-hidden">
-        <div className="strip-right flex gap-4" style={{ width: 'max-content' }}>
+        <div className="strip-right flex" style={{ width: 'max-content' }}>
           {r2.map((id, i) => (
             <div
               key={`r2-${i}`}
-              className="shrink-0 overflow-hidden rounded-md bg-slate-800"
+              className="mr-4 shrink-0 overflow-hidden rounded-md bg-slate-800"
               style={{ width: '220px', height: '220px' }}
             >
               <img
@@ -101,7 +101,8 @@ const features = [
 
 export default function Landing() {
   const { isLoggedIn } = useAuthStore();
-  const bookingPath = isLoggedIn ? '/reservation' : '/signup';
+  const bookingPath = isLoggedIn ? '/reservation' : '/login';
+  const bookingState = isLoggedIn ? undefined : { from: '/reservation' };
 
   return (
     <div className="bg-white">
@@ -124,7 +125,7 @@ export default function Landing() {
               <span className="text-white/60">완벽하게.</span>
             </h1>
             <div className="flex flex-wrap gap-4">
-              <Link to={bookingPath} className="inline-flex items-center gap-2 px-7 py-3.5 bg-white text-[#0B1F3A] font-bold rounded text-sm hover:bg-slate-100 transition-colors tracking-wide">
+              <Link to={bookingPath} state={bookingState} className="inline-flex items-center gap-2 px-7 py-3.5 bg-white text-[#0B1F3A] font-bold rounded text-sm hover:bg-slate-100 transition-colors tracking-wide">
                 예약하기
               </Link>
               <Link to="/services" className="inline-flex items-center gap-2 px-7 py-3.5 border border-white/30 text-white font-medium rounded text-sm hover:bg-white/5 transition-colors">
@@ -191,7 +192,7 @@ export default function Landing() {
               <p className="text-slate-300">무료 상담과 견적을 받아보세요.</p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 shrink-0">
-              <Link to={bookingPath} className="px-8 py-4 bg-white text-[#0B1F3A] font-bold rounded text-sm hover:bg-slate-100 transition-colors text-center tracking-wide">
+              <Link to={bookingPath} state={bookingState} className="px-8 py-4 bg-white text-[#0B1F3A] font-bold rounded text-sm hover:bg-slate-100 transition-colors text-center tracking-wide">
                 예약하기
               </Link>
               <Link to="/services" className="px-8 py-4 border border-white/30 text-white font-medium rounded text-sm hover:bg-white/5 transition-colors text-center">

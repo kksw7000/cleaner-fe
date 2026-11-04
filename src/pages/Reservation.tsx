@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { services, categoryLabels } from '@/data/mockData';
 import { useAuthStore } from '@/store/authStore';
@@ -22,6 +22,7 @@ const serviceNames: Record<number, string> = {
 export default function Reservation() {
   const { isLoggedIn } = useAuthStore();
   const navigate = useNavigate();
+  const dateInputRef = useRef<HTMLInputElement>(null);
   const [submitted, setSubmitted] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
   const today = new Date();
@@ -44,6 +45,10 @@ export default function Reservation() {
     e.preventDefault();
     if (!isLoggedIn) {
       navigate('/login', { state: { from: '/reservation' } });
+      return;
+    }
+    if (!form.date) {
+      setCalendarOpen(true);
       return;
     }
     setSubmitted(true);
@@ -116,8 +121,9 @@ export default function Reservation() {
             <label htmlFor="reservation-date" className="text-xs font-semibold text-slate-500 tracking-wide block mb-1.5">희망 날짜</label>
             <input
               id="reservation-date"
+              ref={dateInputRef}
               type="text"
-              required
+              aria-required="true"
               readOnly
               aria-haspopup="dialog"
               aria-expanded={calendarOpen}
@@ -176,6 +182,7 @@ export default function Reservation() {
                         onClick={() => {
                           setForm({ ...form, date: dateValue });
                           setCalendarOpen(false);
+                          dateInputRef.current?.focus();
                         }}
                         className={`mx-auto flex h-9 w-9 items-center justify-center rounded-full text-sm transition-colors ${
                           isSelected

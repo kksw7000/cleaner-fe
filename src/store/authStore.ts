@@ -37,7 +37,14 @@ export const useAuthStore = create<AuthStore>((set) => ({
     })),
   logout: () => set({ user: null, isLoggedIn: false }),
   updateUser: (data) =>
-    set((state) => ({
-      user: state.user ? { ...state.user, ...data } : null,
-    })),
+    set((state) => {
+      if (!state.user) return { user: null };
+
+      return {
+        user: { ...state.user, ...data },
+        nicknamesByEmail: data.nickname !== undefined
+          ? { ...state.nicknamesByEmail, [state.user.email]: data.nickname }
+          : state.nicknamesByEmail,
+      };
+    }),
 }));
