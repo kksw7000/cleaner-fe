@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { categoryLabels, type ServiceCategory } from '../data/mockData';
+import { categoryLabels, type ServiceCategory } from '@/data/mockData';
+import Logo from './Logo';
 
 const categories = Object.keys(categoryLabels) as ServiceCategory[];
 
@@ -10,12 +11,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand */}
           <div className="md:col-span-1">
-            <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-8 h-8 rounded bg-white/10 border border-white/20 flex items-center justify-center">
-                <span className="text-white text-sm font-black" style={{ fontFamily: 'Outfit' }}>C</span>
-              </div>
-              <span className="font-bold text-lg text-white tracking-wide" style={{ fontFamily: 'Outfit' }}>CLEANER</span>
-            </div>
+            <Logo className="mb-4" />
             <p className="text-slate-400 text-sm leading-relaxed">
               Professional cleaning services with proven results. Trusted by thousands of homes and businesses nationwide.
             </p>
@@ -50,16 +46,14 @@ export default function Footer() {
                   </Link>
                 </li>
               ))}
-              <li><Link to="/portfolio" className="text-sm text-slate-400 hover:text-white transition-colors">Work Portfolio</Link></li>
-              <li><Link to="/board" className="text-sm text-slate-400 hover:text-white transition-colors">Community</Link></li>
+              <li><Link to="/board" className="text-sm text-slate-400 hover:text-white transition-colors">게시판</Link></li>
             </ul>
           </div>
 
-          {/* Company */}
+          {/* Quick links */}
           <div>
-            <h4 className="text-xs font-semibold text-white uppercase tracking-wider mb-4" style={{ fontFamily: 'Outfit' }}>Company</h4>
+            <h4 className="text-xs font-semibold text-white uppercase tracking-wider mb-4" style={{ fontFamily: 'Outfit' }}>Quick Links</h4>
             <ul className="space-y-2">
-              <li><Link to="/company" className="text-sm text-slate-400 hover:text-white transition-colors">About Us</Link></li>
               <li><Link to="/reservation" className="text-sm text-slate-400 hover:text-white transition-colors">Book a Service</Link></li>
               <li><Link to="/login" className="text-sm text-slate-400 hover:text-white transition-colors">Login</Link></li>
               <li><Link to="/signup" className="text-sm text-slate-400 hover:text-white transition-colors">Sign Up</Link></li>
@@ -68,7 +62,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-white/10 mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <p>© 2026 Cleaner Co. All rights reserved.</p>
+          <p>© 2026 정오클린케어. All rights reserved.</p>
           <p>Professional Cleaning Services · Seoul, Korea</p>
         </div>
       </div>

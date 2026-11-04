@@ -1,5 +1,5 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../../store/authStore';
+import { useAuthStore } from '@/store/authStore';
 
 const navItems = [
   { to: '/admin', label: 'Dashboard', icon: '📊', end: true },

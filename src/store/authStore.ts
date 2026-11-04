@@ -11,7 +11,8 @@ interface User {
 interface AuthStore {
   user: User | null;
   isLoggedIn: boolean;
-  login: (email: string, role?: 'USER' | 'ADMIN') => void;
+  nicknamesByEmail: Record<string, string>;
+  login: (email: string, role?: 'USER' | 'ADMIN', nickname?: string) => void;
   logout: () => void;
   updateUser: (data: Partial<User>) => void;
 }
@@ -19,20 +20,31 @@ interface AuthStore {
 export const useAuthStore = create<AuthStore>((set) => ({
   user: null,
   isLoggedIn: false,
-  login: (email, role = 'USER') =>
-    set({
+  nicknamesByEmail: {},
+  login: (email, role = 'USER', nickname) =>
+    set((state) => ({
       isLoggedIn: true,
       user: {
         id: 1,
         email,
-        nickname: email.split('@')[0],
+        nickname: nickname || state.nicknamesByEmail[email] || email.split('@')[0],
         phone: '010-0000-0000',
         role,
       },
-    }),
+      nicknamesByEmail: nickname
+        ? { ...state.nicknamesByEmail, [email]: nickname }
+        : state.nicknamesByEmail,
+    })),
   logout: () => set({ user: null, isLoggedIn: false }),
   updateUser: (data) =>
-    set((state) => ({
-      user: state.user ? { ...state.user, ...data } : null,
-    })),
+    set((state) => {
+      if (!state.user) return { user: null };
+
+      return {
+        user: { ...state.user, ...data },
+        nicknamesByEmail: data.nickname !== undefined
+          ? { ...state.nicknamesByEmail, [state.user.email]: data.nickname }
+          : state.nicknamesByEmail,
+      };
+    }),
 }));

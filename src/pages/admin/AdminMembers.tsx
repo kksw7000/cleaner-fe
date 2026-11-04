@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { mockUsers, type AdminUser } from '../../data/mockData';
+import { mockUsers, type AdminUser } from '@/data/mockData';
 
 export default function AdminMembers() {
   const [users, setUsers] = useState(mockUsers);

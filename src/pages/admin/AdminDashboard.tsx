@@ -1,4 +1,4 @@
-import { adminReservations, mockUsers, mockPosts, services } from '../../data/mockData';
+import { adminReservations, mockUsers, mockPosts, services } from '@/data/mockData';
 
 const stats = [
   { label: 'Total Members', value: mockUsers.filter((u) => u.role === 'USER').length, icon: '👥', color: 'bg-blue-50 text-blue-700 border-blue-200' },

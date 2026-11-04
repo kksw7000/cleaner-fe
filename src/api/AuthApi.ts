@@ -1,4 +1,4 @@
-import { apiClient } from "@/api/client";
+import { apiClient } from "@/api/ApiClient";
 import type { TokenResponse } from "@/api/contracts";
 
 /** 이메일·비밀번호 로그인은 백엔드의 실제 /api/auth/login 계약으로만 호출합니다. */

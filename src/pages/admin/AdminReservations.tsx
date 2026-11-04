@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { adminReservations as initial, type ReservationStatus } from '../../data/mockData';
+import { adminReservations as initial, type ReservationStatus } from '@/data/mockData';
 
 const statusColors: Record<ReservationStatus, string> = {
   PENDING: 'bg-amber-100 text-amber-700',

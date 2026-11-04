@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { categoryLabels, categoryIcons, services, type ServiceCategory } from '../data/mockData';
-import { categoryPhotos } from '../data/photoData';
+import { categoryLabels, categoryIcons, services, type ServiceCategory } from '@/data/mockData';
+import { categoryPhotos } from '@/data/photoData';
 
 const PHOTOS_PER_PAGE = 9;
 
@@ -17,9 +17,13 @@ const categoryDescriptions: Record<ServiceCategory, string> = {
   ESTATE_CLEANING: 'Respectful, thorough estate cleaning and organization. Ideal for downsizing, sorting a loved one\'s belongings, or clearing a property completely.',
 };
 
-export default function CategoryPage() {
+interface CategoryPageProps {
+  categoryOverride?: ServiceCategory;
+}
+
+export default function CategoryPage({ categoryOverride }: CategoryPageProps) {
   const { category } = useParams<{ category: string }>();
-  const catKey = (category?.toUpperCase() as ServiceCategory) || null;
+  const catKey = categoryOverride ?? (category?.toUpperCase() as ServiceCategory) ?? null;
 
   const [page, setPage] = useState(1);
   const [lightbox, setLightbox] = useState<string | null>(null);
