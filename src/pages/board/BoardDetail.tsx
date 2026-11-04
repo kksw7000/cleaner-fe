@@ -16,12 +16,15 @@ export default function BoardDetail() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, isLoggedIn } = useAuthStore();
+  const routeState = location.state as { draftComment?: unknown } | null;
   const [posts, setPosts] = useState(mockPosts);
   const post = posts.find((p) => p.id === Number(id));
   const [editing, setEditing] = useState(false);
   const [editForm, setEditForm] = useState({ title: post?.title || '', content: post?.content || '' });
   const [comments, setComments] = useState<Comment[]>([]);
-  const [commentContent, setCommentContent] = useState('');
+  const [commentContent, setCommentContent] = useState(() =>
+    typeof routeState?.draftComment === 'string' ? routeState.draftComment : '',
+  );
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
   const [editingCommentContent, setEditingCommentContent] = useState('');
 
@@ -52,7 +55,9 @@ export default function BoardDetail() {
   const handleCommentSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     if (!isLoggedIn || !user) {
-      navigate('/login', { state: { from: location.pathname } });
+      navigate('/login', {
+        state: { from: location.pathname, draftComment: commentContent },
+      });
       return;
     }
 

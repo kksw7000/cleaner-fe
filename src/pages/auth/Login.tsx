@@ -6,7 +6,11 @@ export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useAuthStore();
-  const from = (location.state as any)?.from || '/';
+  const locationState = location.state as { from?: unknown; draftComment?: unknown } | null;
+  const from = typeof locationState?.from === 'string' ? locationState.from : '/';
+  const returnState = typeof locationState?.draftComment === 'string'
+    ? { draftComment: locationState.draftComment }
+    : undefined;
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
 
@@ -15,12 +19,12 @@ export default function Login() {
     if (!form.email || !form.password) { setError('이메일과 비밀번호를 모두 입력해 주세요.'); return; }
     const role = form.email === 'admin@cleaner.com' ? 'ADMIN' : 'USER';
     login(form.email, role);
-    navigate(from);
+    navigate(from, { state: returnState });
   };
 
   const handleSocial = (provider: string) => {
     login(`user@${provider.toLowerCase()}.com`);
-    navigate(from);
+    navigate(from, { state: returnState });
   };
 
   return (
@@ -29,6 +33,9 @@ export default function Login() {
         <div className="text-center mb-8">
           <h1 className="text-2xl font-black text-white">로그인</h1>
           <p className="text-slate-400 text-sm mt-1">예약 내역과 계정 정보를 확인하세요.</p>
+          <Link to="/" className="inline-block text-slate-400 text-sm mt-3 hover:text-white hover:underline">
+            홈으로
+          </Link>
         </div>
 
         <div className="bg-[#111827] border border-white/10 rounded-xl p-6">

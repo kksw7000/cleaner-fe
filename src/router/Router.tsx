@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigationType } from 'react-router-dom';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import AdminDashboard from '@/pages/admin/AdminDashboard';
@@ -42,10 +42,12 @@ function PublicLayout({ children }: { children: React.ReactNode }) {
 
 function ScrollToTop() {
   const { pathname } = useLocation();
+  const navigationType = useNavigationType();
 
   useEffect(() => {
+    if (navigationType === 'POP') return;
     window.scrollTo(0, 0);
-  }, [pathname]);
+  }, [pathname, navigationType]);
 
   return null;
 }
