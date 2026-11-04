@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/store/authStore';
-import Logo from '@/components/Logo';
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -20,9 +19,11 @@ export default function Signup() {
     <div className="min-h-screen bg-[#0B1F3A] flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <Logo className="mb-8" />
           <h1 className="text-2xl font-black text-white" style={{ fontFamily: 'Outfit' }}>Create Account</h1>
           <p className="text-slate-400 text-sm mt-1">Start booking professional cleaning services</p>
+          <Link to="/" className="inline-block text-slate-400 text-sm mt-3 hover:text-white hover:underline">
+            홈으로
+          </Link>
         </div>
 
         <div className="bg-[#111827] border border-white/10 rounded-xl p-6">

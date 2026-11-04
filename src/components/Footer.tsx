@@ -1,69 +1,22 @@
-import { Link } from 'react-router-dom';
-import { categoryLabels, type ServiceCategory } from '@/data/mockData';
-import Logo from './Logo';
-
-const categories = Object.keys(categoryLabels) as ServiceCategory[];
-
 export default function Footer() {
   return (
-    <footer className="bg-[#060F1E] text-white border-t border-white/10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-          {/* Brand */}
-          <div className="md:col-span-1">
-            <Logo className="mb-4" />
-            <p className="text-slate-400 text-sm leading-relaxed">
-              Professional cleaning services with proven results. Trusted by thousands of homes and businesses nationwide.
-            </p>
-            <div className="mt-6 text-xs text-slate-500">
-              <p>Mon–Sat: 08:00 – 18:00</p>
-              <p className="mt-1">📞 02-0000-0000</p>
-            </div>
-          </div>
-
-          {/* Services */}
-          <div>
-            <h4 className="text-xs font-semibold text-white uppercase tracking-wider mb-4" style={{ fontFamily: 'Outfit' }}>Services</h4>
-            <ul className="space-y-2">
-              {categories.slice(0, 6).map((cat) => (
-                <li key={cat}>
-                  <Link to={`/services/${cat.toLowerCase()}`} className="text-sm text-slate-400 hover:text-white transition-colors">
-                    {categoryLabels[cat]}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* More services */}
-          <div>
-            <h4 className="text-xs font-semibold text-white uppercase tracking-wider mb-4" style={{ fontFamily: 'Outfit' }}>More</h4>
-            <ul className="space-y-2">
-              {categories.slice(6).map((cat) => (
-                <li key={cat}>
-                  <Link to={`/services/${cat.toLowerCase()}`} className="text-sm text-slate-400 hover:text-white transition-colors">
-                    {categoryLabels[cat]}
-                  </Link>
-                </li>
-              ))}
-              <li><Link to="/board" className="text-sm text-slate-400 hover:text-white transition-colors">게시판</Link></li>
-            </ul>
-          </div>
-
-          {/* Quick links */}
-          <div>
-            <h4 className="text-xs font-semibold text-white uppercase tracking-wider mb-4" style={{ fontFamily: 'Outfit' }}>Quick Links</h4>
-            <ul className="space-y-2">
-              <li><Link to="/reservation" className="text-sm text-slate-400 hover:text-white transition-colors">Book a Service</Link></li>
-              <li><Link to="/login" className="text-sm text-slate-400 hover:text-white transition-colors">Login</Link></li>
-              <li><Link to="/signup" className="text-sm text-slate-400 hover:text-white transition-colors">Sign Up</Link></li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="border-t border-white/10 mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <p>© 2026 정오클린케어. All rights reserved.</p>
-          <p>Professional Cleaning Services · Seoul, Korea</p>
+    <footer className="border-t border-white/10 bg-[#0B1F3A] text-slate-300">
+      <div className="mx-auto w-full px-5 py-8 text-[11px] leading-relaxed sm:px-6 lg:px-10">
+        <div className="space-y-1">
+          <p>
+            고객센터 :{' '}
+            <a href="tel:01026020993" className="hover:text-white">
+              010-2602-0993
+            </a>{' '}
+            (평일 09:00~20:00) | 이메일 :{' '}
+            <a href="mailto:win_0993@naver.com" className="hover:text-white">
+              win_0993@naver.com
+            </a>
+          </p>
+          <p>
+            정오클린케어 | 주소 : 대구광역시 화원읍 비슬로 2632, 2층 | 사업자등록번호 :
+            260-31-01643
+          </p>
         </div>
       </div>
     </footer>

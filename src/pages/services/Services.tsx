@@ -17,15 +17,15 @@ const heroImages: Record<ServiceCategory, string> = {
 };
 
 const categoryDescriptions: Record<ServiceCategory, string> = {
-  MATTRESS: 'UV sterilization and deep steam cleaning to eliminate dust mites, allergens, and bacteria.',
-  SOFA_CARPET: 'High-pressure steam and hot water extraction for fabric sofas and wall-to-wall carpets.',
-  MOVE_IN: 'Comprehensive top-to-bottom cleaning for your new home before or after moving.',
-  APPLIANCE: 'Full disassembly and antibacterial wash for air conditioners and washing machines.',
-  CONSTRUCTION: 'Specialized removal of construction dust, paint splatter, and debris.',
-  COMMERCIAL: 'Professional cleaning for offices, retail spaces, and commercial facilities.',
-  WAX_COATING: 'Floor wax and coating application for hardwood and tile, restoring gloss and protection.',
-  REGULAR_CLEANING: 'Scheduled home maintenance cleaning covering all living areas, kitchen, and bathrooms.',
-  ESTATE_CLEANING: 'Organization and thorough cleaning for estate situations and belongings sorting.',
+  MATTRESS: '자외선 살균과 고온 스팀 청소로 진드기, 알레르기 유발 물질과 세균을 제거합니다.',
+  SOFA_CARPET: '고압 스팀과 온수 추출 방식으로 패브릭 소파와 카페트를 깨끗하게 관리합니다.',
+  MOVE_IN: '이사 전후 새 보금자리의 구석구석을 꼼꼼하게 청소합니다.',
+  APPLIANCE: '에어컨과 세탁기를 분해해 세척하고 위생적으로 재조립합니다.',
+  CONSTRUCTION: '공사 후 남은 먼지와 페인트 자국, 잔여물을 전문적으로 제거합니다.',
+  COMMERCIAL: '사무실과 매장 등 다양한 상업 공간을 전문적으로 청소합니다.',
+  WAX_COATING: '마루와 타일 바닥에 왁스 코팅을 시공해 광택과 보호 효과를 더합니다.',
+  REGULAR_CLEANING: '거실, 주방, 욕실 등 생활 공간을 정기적으로 청소해 드립니다.',
+  ESTATE_CLEANING: '유품과 생활용품을 정리하고 공간을 세심하게 청소합니다.',
 };
 
 export default function Services() {
@@ -34,9 +34,9 @@ export default function Services() {
       {/* Page header */}
       <div className="bg-[#0B1F3A] text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <p className="text-xs font-semibold tracking-[0.2em] uppercase text-slate-400 mb-3">Professional Cleaning</p>
-          <h1 className="text-4xl md:text-5xl font-black" style={{ fontFamily: 'Outfit' }}>Cleaning Services</h1>
-          <p className="text-slate-300 mt-3 max-w-xl">Select a category to explore work photos, service details, and pricing.</p>
+          <p className="text-xs font-semibold tracking-[0.2em] text-slate-400 mb-3">전문 청소 서비스</p>
+          <h1 className="text-4xl md:text-5xl font-black">청소 서비스</h1>
+          <p className="text-slate-300 mt-3 max-w-xl">카테고리를 선택해 작업 사진과 서비스 내용, 요금을 확인해 보세요.</p>
         </div>
       </div>
 
@@ -62,7 +62,7 @@ export default function Services() {
                 <h3 className="text-xl font-bold text-white" style={{ fontFamily: 'Outfit' }}>{categoryLabels[cat]}</h3>
                 <p className="text-slate-300 text-sm mt-1 line-clamp-2">{categoryDescriptions[cat]}</p>
                 <div className="mt-3 text-xs text-white/60 group-hover:text-white/90 transition-colors flex items-center gap-1">
-                  View work photos →
+                  작업 사진 보기 →
                 </div>
               </div>
             </Link>
@@ -72,10 +72,10 @@ export default function Services() {
 
       {/* CTA */}
       <div className="bg-[#F8FAFC] border-t border-slate-200 py-14 text-center">
-        <h2 className="text-2xl font-black text-[#0B1F3A] mb-3" style={{ fontFamily: 'Outfit' }}>Not sure which service you need?</h2>
-        <p className="text-slate-500 mb-6 text-sm">Contact us for a free consultation — we'll recommend the right cleaning solution for your space.</p>
+        <h2 className="text-2xl font-black text-[#0B1F3A] mb-3">어떤 서비스가 필요한지 고민되시나요?</h2>
+        <p className="text-slate-500 mb-6 text-sm">무료 상담을 통해 공간에 맞는 청소 서비스를 안내해 드립니다.</p>
         <Link to="/reservation" className="inline-flex items-center gap-2 px-7 py-3 bg-[#0B1F3A] text-white font-semibold rounded text-sm hover:bg-[#060F1E] transition-colors">
-          Get a Free Consultation
+          무료 상담 신청
         </Link>
       </div>
     </div>

@@ -27,8 +27,8 @@ export default function MyPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="bg-[#0B1F3A] text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
+      <div className="min-h-[340px] bg-[#0B1F3A] text-white flex items-center">
+        <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 py-16">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white text-xl font-black" style={{ fontFamily: 'Outfit' }}>
               {user?.nickname?.[0]?.toUpperCase()}
