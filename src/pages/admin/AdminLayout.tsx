@@ -1,4 +1,4 @@
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { Navigate, NavLink, Outlet } from 'react-router-dom';
 import { useAuthStore } from '@/store/authStore';
 
 const navItems = [
@@ -11,9 +11,10 @@ const navItems = [
 
 export default function AdminLayout() {
   const { user, isLoggedIn } = useAuthStore();
-  const navigate = useNavigate();
 
-  if (!isLoggedIn || user?.role !== 'ADMIN') { navigate('/login'); return null; }
+  if (!isLoggedIn || user?.role !== 'ADMIN') {
+    return <Navigate to="/login" replace />;
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 flex">
