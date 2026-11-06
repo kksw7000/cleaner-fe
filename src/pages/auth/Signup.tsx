@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/store/authStore';
 
+/** 회원가입 입력 상태와 비밀번호 확인값을 함께 담습니다. */
 interface SignupForm {
   email: string;
   password: string;
@@ -10,6 +11,7 @@ interface SignupForm {
   phone: string;
 }
 
+/** 회원가입 입력 필드 정의이며, key는 SignupForm 속성으로 제한합니다. */
 interface SignupField {
   label: string;
   type: React.HTMLInputTypeAttribute;
