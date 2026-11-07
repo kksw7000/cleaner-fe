@@ -42,12 +42,12 @@ export default function Header() {
           onClick={() => setMenuOpen(false)}
           className="lg:hidden font-bold text-lg tracking-wide text-white"
         >
-          정오클린케어
+          청소를 만드는 사람들
         </Link>
 
         {/* 데스크톱 메뉴 */}
         <nav className="hidden lg:flex items-center gap-7">
-          <Link to="/" className={navLinkCls('/')}>정오클린케어</Link>
+          <Link to="/" className={navLinkCls('/')}>청소를 만드는 사람들</Link>
           {/* 청소 서비스 메뉴 */}
           <div className="relative" ref={dropdownRef}>
             <button

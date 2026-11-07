@@ -94,7 +94,7 @@ function OnSiteStrip() {
 
 const features = [
   { title: '검증된 전문 인력', desc: '모든 작업자는 충분한 교육과 검증을 거쳐 안심하고 서비스를 이용하실 수 있습니다.' },
-  { title: '믿을 수 있는 작업 결과', desc: '실제 작업 사례를 통해 정오클린케어의 꼼꼼한 변화를 확인하실 수 있습니다.' },
+  { title: '믿을 수 있는 작업 결과', desc: '실제 작업 사례를 통해 청만사의 꼼꼼한 변화를 확인하실 수 있습니다.' },
   { title: '편리한 일정 예약', desc: '온라인으로 간편하게 예약하고 월요일부터 토요일까지 원하는 시간을 선택하세요.' },
   { title: '만족 보장 서비스', desc: '서비스 결과에 만족하지 못하셨다면 추가 비용 없이 불편 사항을 확인하고 조치해 드립니다.' },
 ];
@@ -118,7 +118,7 @@ export default function Landing() {
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-28 md:py-40">
           <div className="max-w-2xl">
-            <p className="text-xs font-semibold tracking-[0.2em] text-slate-400 mb-5">정오클린케어 전문 청소 서비스</p>
+            <p className="text-xs font-semibold tracking-[0.2em] text-slate-400 mb-5">청만사 전문 청소 서비스</p>
             <h1 className="text-5xl md:text-7xl font-black leading-[1.05] mb-6 tracking-tight" style={{ fontFamily: 'Outfit' }}>
               검증된 실력으로,<br />
               전문적으로,<br />
@@ -143,8 +143,8 @@ export default function Landing() {
       <section className="py-20 bg-[#F8FAFC]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12">
-            <p className="text-xs font-semibold tracking-[0.2em] text-slate-400 mb-3">정오클린케어를 선택하는 이유</p>
-            <h2 className="text-3xl md:text-4xl font-black text-[#0B1F3A]" style={{ fontFamily: 'Outfit' }}>정오클린케어만의 차별점</h2>
+            <p className="text-xs font-semibold tracking-[0.2em] text-slate-400 mb-3">청만사를 선택하는 이유</p>
+            <h2 className="text-3xl md:text-4xl font-black text-[#0B1F3A]" style={{ fontFamily: 'Outfit' }}>청만사 만의 차별점</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((f) => (
