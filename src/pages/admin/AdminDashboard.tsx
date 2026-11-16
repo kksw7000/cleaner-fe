@@ -1,7 +1,7 @@
 import { adminReservations, mockUsers, mockPosts, services } from '@/data/mockData';
 
 const stats = [
-  { label: '전체 회원', value: mockUsers.filter((u) => u.role === 'USER').length, icon: '👥', color: 'bg-blue-50 text-blue-700 border-blue-200' },
+  { label: '일반 회원', value: mockUsers.filter((u) => u.role === 'USER').length, icon: '👥', color: 'bg-blue-50 text-blue-700 border-blue-200' },
   { label: '전체 서비스', value: services.length, icon: '🧹', color: 'bg-teal-50 text-teal-700 border-teal-200' },
   { label: '게시글', value: mockPosts.length, icon: '📝', color: 'bg-purple-50 text-purple-700 border-purple-200' },
   { label: '예약', value: adminReservations.length, icon: '📅', color: 'bg-amber-50 text-amber-700 border-amber-200' },

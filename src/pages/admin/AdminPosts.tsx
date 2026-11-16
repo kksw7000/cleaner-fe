@@ -12,10 +12,15 @@ const writerNames: Record<string, string> = {
 export default function AdminPosts() {
   const [posts, setPosts] = useState(mockPosts);
   const [search, setSearch] = useState('');
+  const normalizedSearch = search.toLowerCase();
 
-  const filtered = posts.filter((p) =>
-    !search || p.title.toLowerCase().includes(search.toLowerCase()) || p.writer.toLowerCase().includes(search.toLowerCase())
-  );
+  const filtered = posts.filter((p) => {
+    const displayWriter = writerNames[p.writer] ?? p.writer;
+    return !normalizedSearch
+      || p.title.toLowerCase().includes(normalizedSearch)
+      || p.writer.toLowerCase().includes(normalizedSearch)
+      || displayWriter.toLowerCase().includes(normalizedSearch);
+  });
 
   const handleDelete = (id: number) => {
     if (confirm('이 게시글을 삭제하시겠습니까?')) {
