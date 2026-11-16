@@ -10,7 +10,7 @@ export default function AdminMembers() {
   );
 
   const handleDelete = (id: number) => {
-    if (confirm('Force-delete this account?')) {
+    if (confirm('이 회원을 강제 탈퇴 처리하시겠습니까?')) {
       setUsers((prev) => prev.filter((u) => u.id !== id));
     }
   };
@@ -18,13 +18,13 @@ export default function AdminMembers() {
   return (
     <div className="p-8">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-slate-900" style={{ fontFamily: 'Outfit' }}>Members</h1>
-        <span className="text-sm text-slate-500">{users.length} total</span>
+        <h1 className="text-2xl font-bold text-slate-900">회원 관리</h1>
+        <span className="text-sm text-slate-500">총 {users.length}명</span>
       </div>
 
       <input
         type="text"
-        placeholder="Search by email or nickname..."
+        placeholder="이메일 또는 닉네임 검색"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         className="w-full max-w-sm border border-slate-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 mb-6"
@@ -34,7 +34,7 @@ export default function AdminMembers() {
         <table className="w-full text-sm">
           <thead className="bg-slate-50 border-b border-slate-200">
             <tr>
-              {['ID', 'Email', 'Nickname', 'Phone', 'Role', 'Provider', 'Joined', ''].map((h) => (
+              {['번호', '이메일', '닉네임', '연락처', '권한', '가입 방식', '가입일', ''].map((h) => (
                 <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">{h}</th>
               ))}
             </tr>
@@ -47,14 +47,14 @@ export default function AdminMembers() {
                 <td className="px-4 py-3 font-medium text-slate-900">{u.nickname}</td>
                 <td className="px-4 py-3 text-slate-500">{u.phone}</td>
                 <td className="px-4 py-3">
-                  <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${u.role === 'ADMIN' ? 'bg-purple-100 text-purple-700' : 'bg-slate-100 text-slate-600'}`}>{u.role}</span>
+                  <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${u.role === 'ADMIN' ? 'bg-purple-100 text-purple-700' : 'bg-slate-100 text-slate-600'}`}>{u.role === 'ADMIN' ? '관리자' : '회원'}</span>
                 </td>
-                <td className="px-4 py-3 text-slate-500 text-xs">{u.provider}</td>
+                <td className="px-4 py-3 text-slate-500 text-xs">{u.provider === 'LOCAL' ? '자체 가입' : u.provider === 'GOOGLE' ? '구글' : u.provider === 'KAKAO' ? '카카오' : u.provider}</td>
                 <td className="px-4 py-3 text-slate-400 text-xs">{u.createdAt}</td>
                 <td className="px-4 py-3">
                   {u.role !== 'ADMIN' && (
                     <button onClick={() => handleDelete(u.id)} className="text-xs text-red-500 hover:text-red-700 font-medium transition-colors">
-                      Delete
+                      삭제
                     </button>
                   )}
                 </td>
@@ -63,7 +63,7 @@ export default function AdminMembers() {
           </tbody>
         </table>
         {filtered.length === 0 && (
-          <div className="text-center py-12 text-slate-400 text-sm">No members found.</div>
+          <div className="text-center py-12 text-slate-400 text-sm">회원이 없습니다.</div>
         )}
       </div>
     </div>
