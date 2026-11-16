@@ -105,16 +105,16 @@ export interface AdminUser {
 }
 
 export const mockUsers: AdminUser[] = [
-  { id: 1, email: 'sophie.k@email.com', nickname: 'Sophie K.', phone: '010-1234-5678', role: 'USER', provider: 'LOCAL', createdAt: '2026-08-10' },
-  { id: 2, email: 'mark.t@email.com', nickname: 'Mark T.', phone: '010-2345-6789', role: 'USER', provider: 'GOOGLE', createdAt: '2026-08-15' },
-  { id: 3, email: 'jenna.l@email.com', nickname: 'Jenna L.', phone: '010-3456-7890', role: 'USER', provider: 'LOCAL', createdAt: '2026-08-20' },
-  { id: 4, email: 'chris.w@email.com', nickname: 'Chris W.', phone: '010-4567-8901', role: 'USER', provider: 'KAKAO', createdAt: '2026-09-01' },
-  { id: 5, email: 'admin@cleaner.com', nickname: 'Admin', phone: '010-0000-0000', role: 'ADMIN', provider: 'LOCAL', createdAt: '2026-07-01' },
+  { id: 1, email: 'minsu.kim@email.com', nickname: '김민수', phone: '010-1234-5678', role: 'USER', provider: 'LOCAL', createdAt: '2026-08-10' },
+  { id: 2, email: 'seoyeon.lee@email.com', nickname: '이서연', phone: '010-2345-6789', role: 'USER', provider: 'GOOGLE', createdAt: '2026-08-15' },
+  { id: 3, email: 'jihoon.park@email.com', nickname: '박지훈', phone: '010-3456-7890', role: 'USER', provider: 'LOCAL', createdAt: '2026-08-20' },
+  { id: 4, email: 'yujin.choi@email.com', nickname: '최유진', phone: '010-4567-8901', role: 'USER', provider: 'KAKAO', createdAt: '2026-09-01' },
+  { id: 5, email: 'admin@cleaner.com', nickname: '관리자', phone: '010-0000-0000', role: 'ADMIN', provider: 'LOCAL', createdAt: '2026-07-01' },
 ];
 
 export const adminReservations = [
-  { id: 1, userName: 'Sophie K.', email: 'sophie.k@email.com', serviceName: 'Deep Mattress Sanitization', reservationDate: '2026-09-25 10:00', address: '123 Maple St', status: 'CONFIRMED' as ReservationStatus, createdAt: '2026-09-17' },
-  { id: 2, userName: 'Mark T.', email: 'mark.t@email.com', serviceName: 'Air Conditioner Cleaning', reservationDate: '2026-10-02 14:00', address: '456 Oak Ave', status: 'PENDING' as ReservationStatus, createdAt: '2026-09-16' },
-  { id: 3, userName: 'Jenna L.', email: 'jenna.l@email.com', serviceName: 'Weekly Home Cleaning', reservationDate: '2026-09-10 09:00', address: '789 Pine Rd', status: 'COMPLETED' as ReservationStatus, createdAt: '2026-09-05' },
-  { id: 4, userName: 'Chris W.', email: 'chris.w@email.com', serviceName: 'Sofa Steam Cleaning', reservationDate: '2026-09-28 11:00', address: '321 Elm St', status: 'PENDING' as ReservationStatus, createdAt: '2026-09-14' },
+  { id: 1, userName: '김민수', email: 'minsu.kim@email.com', serviceName: '매트리스 살균 청소', reservationDate: '2026-09-25 10:00', address: '123 Maple St', status: 'CONFIRMED' as ReservationStatus, createdAt: '2026-09-17' },
+  { id: 2, userName: '이서연', email: 'seoyeon.lee@email.com', serviceName: '에어컨 청소', reservationDate: '2026-10-02 14:00', address: '456 Oak Ave', status: 'PENDING' as ReservationStatus, createdAt: '2026-09-16' },
+  { id: 3, userName: '박지훈', email: 'jihoon.park@email.com', serviceName: '주 1회 정기 청소', reservationDate: '2026-09-10 09:00', address: '789 Pine Rd', status: 'COMPLETED' as ReservationStatus, createdAt: '2026-09-05' },
+  { id: 4, userName: '최유진', email: 'yujin.choi@email.com', serviceName: '소파 스팀 청소', reservationDate: '2026-09-28 11:00', address: '321 Elm St', status: 'PENDING' as ReservationStatus, createdAt: '2026-09-14' },
 ];

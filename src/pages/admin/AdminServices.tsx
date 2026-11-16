@@ -36,7 +36,7 @@ export default function AdminServices() {
   };
 
   const handleDelete = (id: number) => {
-    if (confirm('Delete this service?')) {
+    if (confirm('이 서비스를 삭제하시겠습니까?')) {
       setList((prev) => prev.filter((s) => s.id !== id));
     }
   };
@@ -44,43 +44,43 @@ export default function AdminServices() {
   return (
     <div className="p-8">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-slate-900" style={{ fontFamily: 'Outfit' }}>Services</h1>
+        <h1 className="text-2xl font-bold text-slate-900">서비스 관리</h1>
         <button
           onClick={() => { setShowForm(true); setEditId(null); setForm({ name: '', category: 'MATTRESS', description: '', price: '' }); }}
           className="px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-full hover:bg-teal-700 transition-colors"
         >
-          + Add Service
+          + 서비스 추가
         </button>
       </div>
 
       {showForm && (
         <div className="bg-white border border-slate-200 rounded-xl p-6 mb-6">
-          <h2 className="font-bold text-slate-900 mb-4 text-sm" style={{ fontFamily: 'Outfit' }}>{editId ? 'Edit Service' : 'New Service'}</h2>
+          <h2 className="font-bold text-slate-900 mb-4 text-sm">{editId ? '서비스 수정' : '새 서비스 등록'}</h2>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="text-xs text-slate-500 block mb-1">Name</label>
+              <label className="text-xs text-slate-500 block mb-1">서비스명</label>
               <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
             </div>
             <div>
-              <label className="text-xs text-slate-500 block mb-1">Category</label>
+              <label className="text-xs text-slate-500 block mb-1">분류</label>
               <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value as ServiceCategory })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white">
                 {categories.map((c) => <option key={c} value={c}>{categoryLabels[c]}</option>)}
               </select>
             </div>
             <div className="sm:col-span-2">
-              <label className="text-xs text-slate-500 block mb-1">Description</label>
+              <label className="text-xs text-slate-500 block mb-1">설명</label>
               <textarea required rows={2} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none" />
             </div>
             <div>
-              <label className="text-xs text-slate-500 block mb-1">Price (₩)</label>
-              <input required type="number" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
+              <label className="text-xs text-slate-500 block mb-1">가격 (₩)</label>
+              <input required type="number" min="0" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
             </div>
             <div className="flex items-end gap-3">
               <button type="submit" className="px-5 py-2 bg-teal-600 text-white text-sm font-medium rounded-full hover:bg-teal-700 transition-colors">
-                {editId ? 'Update' : 'Create'}
+                {editId ? '수정' : '등록'}
               </button>
               <button type="button" onClick={() => { setShowForm(false); setEditId(null); }} className="px-5 py-2 border border-slate-200 text-slate-600 text-sm rounded-full hover:border-slate-400 transition-colors">
-                Cancel
+                취소
               </button>
             </div>
           </form>
@@ -91,7 +91,7 @@ export default function AdminServices() {
         <table className="w-full text-sm">
           <thead className="bg-slate-50 border-b border-slate-200">
             <tr>
-              {['Category', 'Name', 'Price', 'Description', ''].map((h) => (
+              {['분류', '서비스명', '가격', '설명', ''].map((h) => (
                 <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">{h}</th>
               ))}
             </tr>
@@ -110,8 +110,8 @@ export default function AdminServices() {
                 <td className="px-4 py-3 text-slate-500 text-xs max-w-xs truncate">{s.description}</td>
                 <td className="px-4 py-3">
                   <div className="flex gap-3 text-xs">
-                    <button onClick={() => handleEdit(s)} className="text-teal-600 hover:text-teal-700 font-medium transition-colors">Edit</button>
-                    <button onClick={() => handleDelete(s.id)} className="text-red-500 hover:text-red-700 font-medium transition-colors">Delete</button>
+                    <button onClick={() => handleEdit(s)} className="text-teal-600 hover:text-teal-700 font-medium transition-colors">수정</button>
+                    <button onClick={() => handleDelete(s.id)} className="text-red-500 hover:text-red-700 font-medium transition-colors">삭제</button>
                   </div>
                 </td>
               </tr>

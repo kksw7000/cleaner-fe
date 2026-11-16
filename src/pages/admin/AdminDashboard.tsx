@@ -1,10 +1,10 @@
 import { adminReservations, mockUsers, mockPosts, services } from '@/data/mockData';
 
 const stats = [
-  { label: 'Total Members', value: mockUsers.filter((u) => u.role === 'USER').length, icon: '👥', color: 'bg-blue-50 text-blue-700 border-blue-200' },
-  { label: 'Total Services', value: services.length, icon: '🧹', color: 'bg-teal-50 text-teal-700 border-teal-200' },
-  { label: 'Board Posts', value: mockPosts.length, icon: '📝', color: 'bg-purple-50 text-purple-700 border-purple-200' },
-  { label: 'Reservations', value: adminReservations.length, icon: '📅', color: 'bg-amber-50 text-amber-700 border-amber-200' },
+  { label: '일반 회원', value: mockUsers.filter((u) => u.role === 'USER').length, icon: '👥', color: 'bg-blue-50 text-blue-700 border-blue-200' },
+  { label: '전체 서비스', value: services.length, icon: '🧹', color: 'bg-teal-50 text-teal-700 border-teal-200' },
+  { label: '게시글', value: mockPosts.length, icon: '📝', color: 'bg-purple-50 text-purple-700 border-purple-200' },
+  { label: '예약', value: adminReservations.length, icon: '📅', color: 'bg-amber-50 text-amber-700 border-amber-200' },
 ];
 
 const statusColors: Record<string, string> = {
@@ -14,6 +14,13 @@ const statusColors: Record<string, string> = {
   CANCELED: 'bg-slate-100 text-slate-500',
 };
 
+const statusLabels: Record<string, string> = {
+  PENDING: '대기 중',
+  CONFIRMED: '확정',
+  COMPLETED: '완료',
+  CANCELED: '취소',
+};
+
 export default function AdminDashboard() {
   const pending = adminReservations.filter((r) => r.status === 'PENDING').length;
   const confirmed = adminReservations.filter((r) => r.status === 'CONFIRMED').length;
@@ -21,9 +28,9 @@ export default function AdminDashboard() {
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-bold text-slate-900 mb-6" style={{ fontFamily: 'Outfit' }}>Dashboard</h1>
+      <h1 className="text-2xl font-bold text-slate-900 mb-6">대시보드</h1>
 
-      {/* Stats */}
+      {/* 주요 현황 */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {stats.map((s) => (
           <div key={s.label} className={`border rounded-xl p-5 ${s.color}`}>
@@ -34,15 +41,15 @@ export default function AdminDashboard() {
         ))}
       </div>
 
-      {/* Reservation breakdown */}
+      {/* 예약 현황 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white rounded-xl border border-slate-200 p-6">
-          <h2 className="font-bold text-slate-900 mb-4 text-sm" style={{ fontFamily: 'Outfit' }}>Reservation Status</h2>
+          <h2 className="font-bold text-slate-900 mb-4 text-sm">예약 현황</h2>
           <div className="space-y-3">
             {[
-              { label: 'Pending', count: pending, color: 'bg-amber-400', total: adminReservations.length },
-              { label: 'Confirmed', count: confirmed, color: 'bg-blue-400', total: adminReservations.length },
-              { label: 'Completed', count: completed, color: 'bg-teal-400', total: adminReservations.length },
+              { label: '대기 중', count: pending, color: 'bg-amber-400', total: adminReservations.length },
+              { label: '확정', count: confirmed, color: 'bg-blue-400', total: adminReservations.length },
+              { label: '완료', count: completed, color: 'bg-teal-400', total: adminReservations.length },
             ].map((item) => (
               <div key={item.label}>
                 <div className="flex justify-between text-sm mb-1">
@@ -61,7 +68,7 @@ export default function AdminDashboard() {
         </div>
 
         <div className="bg-white rounded-xl border border-slate-200 p-6">
-          <h2 className="font-bold text-slate-900 mb-4 text-sm" style={{ fontFamily: 'Outfit' }}>Recent Reservations</h2>
+          <h2 className="font-bold text-slate-900 mb-4 text-sm">최근 예약</h2>
           <div className="space-y-3">
             {adminReservations.slice(0, 4).map((r) => (
               <div key={r.id} className="flex items-center justify-between">
@@ -69,7 +76,7 @@ export default function AdminDashboard() {
                   <p className="text-sm font-medium text-slate-700">{r.userName}</p>
                   <p className="text-xs text-slate-400">{r.serviceName}</p>
                 </div>
-                <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusColors[r.status]}`}>{r.status}</span>
+                <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusColors[r.status]}`}>{statusLabels[r.status]}</span>
               </div>
             ))}
           </div>

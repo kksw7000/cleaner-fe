@@ -20,11 +20,11 @@ interface SignupField {
 }
 
 const signupFields: SignupField[] = [
-  { label: 'Email', type: 'email', key: 'email', placeholder: 'you@example.com' },
-  { label: 'Nickname', type: 'text', key: 'nickname', placeholder: 'Display name' },
-  { label: 'Phone', type: 'tel', key: 'phone', placeholder: '010-0000-0000' },
-  { label: 'Password', type: 'password', key: 'password', placeholder: '••••••••' },
-  { label: 'Confirm Password', type: 'password', key: 'confirm', placeholder: '••••••••' },
+  { label: '이메일', type: 'email', key: 'email', placeholder: '이메일 주소를 입력하세요' },
+  { label: '닉네임', type: 'text', key: 'nickname', placeholder: '사용할 닉네임을 입력하세요' },
+  { label: '전화번호', type: 'tel', key: 'phone', placeholder: '010-0000-0000' },
+  { label: '비밀번호', type: 'password', key: 'password', placeholder: '비밀번호를 입력하세요' },
+  { label: '비밀번호 확인', type: 'password', key: 'confirm', placeholder: '비밀번호를 다시 입력하세요' },
 ];
 
 export default function Signup() {
@@ -35,7 +35,7 @@ export default function Signup() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (form.password !== form.confirm) { setError('Passwords do not match.'); return; }
+    if (form.password !== form.confirm) { setError('비밀번호가 일치하지 않습니다.'); return; }
     login(form.email, 'USER', form.nickname.trim());
     navigate('/');
   };
@@ -44,10 +44,9 @@ export default function Signup() {
     <div className="min-h-screen bg-[#0B1F3A] flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-black text-white" style={{ fontFamily: 'Outfit' }}>Create Account</h1>
-          <p className="text-slate-400 text-sm mt-1">Start booking professional cleaning services</p>
-          <Link to="/" className="inline-block text-slate-400 text-sm mt-3 hover:text-white hover:underline">
-            홈으로
+          <h1 className="text-base font-bold text-white">회원가입</h1>
+          <Link to="/" className="inline-block text-slate-400 text-2xl font-black mt-3 hover:text-white hover:underline">
+            청소를 만드는 사람들
           </Link>
         </div>
 
@@ -68,11 +67,11 @@ export default function Signup() {
               </div>
             ))}
             <button type="submit" className="w-full py-3 bg-white text-[#0B1F3A] font-black rounded hover:bg-slate-100 transition-colors text-sm tracking-wide">
-              CREATE ACCOUNT
+              가입하기
             </button>
           </form>
           <p className="text-center text-sm text-slate-500 mt-4">
-            Already have an account? <Link to="/login" className="text-white font-medium hover:underline">Sign in</Link>
+            이미 회원이신가요? <Link to="/login" className="text-white font-medium hover:underline">로그인</Link>
           </p>
         </div>
       </div>

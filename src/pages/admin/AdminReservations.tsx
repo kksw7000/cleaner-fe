@@ -15,6 +15,14 @@ const nextStatus: Record<ReservationStatus, ReservationStatus | null> = {
   CANCELED: null,
 };
 
+const statusLabels: Record<ReservationStatus | 'ALL', string> = {
+  ALL: '전체',
+  PENDING: '대기 중',
+  CONFIRMED: '확정',
+  COMPLETED: '완료',
+  CANCELED: '취소',
+};
+
 export default function AdminReservations() {
   const [list, setList] = useState(initial);
   const [filter, setFilter] = useState<ReservationStatus | 'ALL'>('ALL');
@@ -34,8 +42,8 @@ export default function AdminReservations() {
   return (
     <div className="p-8">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-slate-900" style={{ fontFamily: 'Outfit' }}>Reservations</h1>
-        <span className="text-sm text-slate-500">{list.length} total</span>
+        <h1 className="text-2xl font-bold text-slate-900">예약 관리</h1>
+        <span className="text-sm text-slate-500">총 {list.length}건</span>
       </div>
 
       <div className="flex flex-wrap gap-2 mb-6">
@@ -45,7 +53,7 @@ export default function AdminReservations() {
             onClick={() => setFilter(s)}
             className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${filter === s ? 'bg-teal-600 text-white' : 'bg-white border border-slate-200 text-slate-600 hover:border-slate-300'}`}
           >
-            {s === 'ALL' ? 'All' : s}
+            {statusLabels[s]}
           </button>
         ))}
       </div>
@@ -58,7 +66,7 @@ export default function AdminReservations() {
                 <span className="font-semibold text-slate-900 text-sm" style={{ fontFamily: 'Outfit' }}>{r.userName}</span>
                 <span className="text-slate-300">·</span>
                 <span className="text-xs text-slate-500">{r.email}</span>
-                <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusColors[r.status]}`}>{r.status}</span>
+                <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusColors[r.status]}`}>{statusLabels[r.status]}</span>
               </div>
               <p className="text-sm text-teal-700 font-medium">{r.serviceName}</p>
               <p className="text-xs text-slate-400 mt-0.5">{r.reservationDate} · {r.address}</p>
@@ -69,7 +77,7 @@ export default function AdminReservations() {
                   onClick={() => handleAdvance(r.id, r.status)}
                   className="text-xs px-3 py-1.5 bg-teal-600 text-white rounded-full hover:bg-teal-700 transition-colors font-medium"
                 >
-                  → {nextStatus[r.status]}
+                  → {statusLabels[nextStatus[r.status] ?? r.status]}
                 </button>
               )}
               {r.status !== 'CANCELED' && r.status !== 'COMPLETED' && (
@@ -77,14 +85,14 @@ export default function AdminReservations() {
                   onClick={() => handleCancel(r.id)}
                   className="text-xs px-3 py-1.5 border border-red-200 text-red-500 rounded-full hover:bg-red-50 transition-colors font-medium"
                 >
-                  Cancel
+                  취소
                 </button>
               )}
             </div>
           </div>
         ))}
         {filtered.length === 0 && (
-          <div className="text-center py-14 text-slate-400 text-sm">No reservations in this status.</div>
+          <div className="text-center py-14 text-slate-400 text-sm">해당 상태의 예약이 없습니다.</div>
         )}
       </div>
     </div>
