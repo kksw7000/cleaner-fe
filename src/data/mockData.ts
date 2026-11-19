@@ -72,9 +72,9 @@ export interface Reservation {
 }
 
 export const mockReservations: Reservation[] = [
-  { id: 1, serviceId: 1, serviceName: 'Deep Mattress Sanitization', reservationDate: '2026-09-25 10:00', address: '123 Maple Street, Apt 4B, Seoul', status: 'CONFIRMED', memo: 'King size, please bring extra covers', createdAt: '2026-09-17' },
-  { id: 2, serviceId: 7, serviceName: 'Air Conditioner Cleaning', reservationDate: '2026-10-02 14:00', address: '123 Maple Street, Apt 4B, Seoul', status: 'PENDING', memo: '2 wall units', createdAt: '2026-09-16' },
-  { id: 3, serviceId: 12, serviceName: 'Weekly Home Cleaning', reservationDate: '2026-09-10 09:00', address: '123 Maple Street, Apt 4B, Seoul', status: 'COMPLETED', memo: '', createdAt: '2026-09-05' },
+  { id: 1, serviceId: 1, serviceName: '매트리스 살균 청소', reservationDate: '2026-09-25 10:00', address: '서울특별시 중구 세종대로 110, 4층', status: 'CONFIRMED', memo: '킹사이즈 매트리스입니다. 여분 커버를 준비해 주세요.', createdAt: '2026-09-17' },
+  { id: 2, serviceId: 7, serviceName: '에어컨 청소', reservationDate: '2026-10-02 14:00', address: '서울특별시 중구 세종대로 110, 4층', status: 'PENDING', memo: '벽걸이형 2대', createdAt: '2026-09-16' },
+  { id: 3, serviceId: 12, serviceName: '주 1회 정기 청소', reservationDate: '2026-09-10 09:00', address: '서울특별시 중구 세종대로 110, 4층', status: 'COMPLETED', memo: '', createdAt: '2026-09-05' },
 ];
 
 export interface BoardPost {

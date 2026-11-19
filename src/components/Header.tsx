@@ -1,7 +1,15 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '@/store/authStore';
 import { categoryLabels, type ServiceCategory } from '@/data/mockData';
+import {
+  getNotificationHome,
+  markAllNotificationsAsRead,
+  markNotificationAsRead,
+  notificationKeys,
+} from '@/features/notification/NotificationApi';
+import { logoutFromServer } from '@/api/AuthApi';
 
 const categories = Object.keys(categoryLabels) as ServiceCategory[];
 
@@ -9,14 +17,34 @@ export default function Header() {
   const { isLoggedIn, user, logout } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
+  const queryClient = useQueryClient();
   const [menuOpen, setMenuOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const notificationRef = useRef<HTMLDivElement>(null);
+  const notificationHomeQuery = useQuery({
+    queryKey: notificationKeys.home,
+    queryFn: getNotificationHome,
+    enabled: isLoggedIn,
+  });
+  const invalidateNotifications = () => queryClient.invalidateQueries({ queryKey: notificationKeys.all });
+  const markReadMutation = useMutation({
+    mutationFn: markNotificationAsRead,
+    onSuccess: invalidateNotifications,
+  });
+  const markAllMutation = useMutation({
+    mutationFn: markAllNotificationsAsRead,
+    onSuccess: invalidateNotifications,
+  });
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setServicesOpen(false);
+      }
+      if (notificationRef.current && !notificationRef.current.contains(e.target as Node)) {
+        setNotificationsOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClick);
@@ -24,9 +52,14 @@ export default function Header() {
   }, []);
 
   const handleLogout = () => {
+    queryClient.removeQueries({ queryKey: notificationKeys.all });
     logout();
+    void logoutFromServer().catch((error: unknown) => {
+      console.error('로그아웃 쿠키를 서버에서 만료하지 못했습니다.', error);
+    });
     navigate('/');
     setMenuOpen(false);
+    setNotificationsOpen(false);
   };
 
   const isActive = (path: string) => location.pathname === path;
@@ -86,7 +119,85 @@ export default function Header() {
         <div className="hidden lg:flex items-center gap-4">
           {isLoggedIn ? (
             <>
-              <Link to="/mypage" className="text-sm text-slate-300 hover:text-white transition-colors">{user?.nickname} 님</Link>
+              <Link to="/mypage" className="text-sm text-slate-300 hover:text-white transition-colors">{user?.nickname ?? '내 계정'} 님</Link>
+              <div className="relative" ref={notificationRef}>
+                <button
+                  type="button"
+                  aria-label={`알림${notificationHomeQuery.data?.unreadCount ? `, 읽지 않은 알림 ${notificationHomeQuery.data.unreadCount}개` : ''}`}
+                  aria-expanded={notificationsOpen}
+                  onClick={() => setNotificationsOpen((open) => !open)}
+                  className="relative flex h-9 w-9 items-center justify-center rounded-full text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
+                >
+                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M18 8a6 6 0 00-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" />
+                  </svg>
+                  {!!notificationHomeQuery.data?.unreadCount && (
+                    <span className="absolute -right-1 -top-1 min-w-5 rounded-full bg-red-500 px-1 text-center text-[10px] font-bold leading-5 text-white">
+                      {notificationHomeQuery.data.unreadCount > 99 ? '99+' : notificationHomeQuery.data.unreadCount}
+                    </span>
+                  )}
+                </button>
+                {notificationsOpen && (
+                  <div className="absolute right-0 top-full z-50 mt-2 w-80 overflow-hidden rounded-xl border border-slate-200 bg-white text-slate-800 shadow-xl">
+                    <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
+                      <h2 className="text-sm font-bold">알림</h2>
+                      <button
+                        type="button"
+                        onClick={() => markAllMutation.mutate()}
+                        disabled={!notificationHomeQuery.data?.unreadCount || markAllMutation.isPending}
+                        className="text-xs font-medium text-slate-500 hover:text-[#0B1F3A] disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        모두 읽음
+                      </button>
+                    </div>
+                    {notificationHomeQuery.isPending ? (
+                      <p role="status" className="px-4 py-6 text-center text-sm text-slate-500">알림을 불러오는 중입니다.</p>
+                    ) : notificationHomeQuery.isError ? (
+                      <p role="alert" className="px-4 py-6 text-center text-sm text-red-600">알림을 불러오지 못했습니다.</p>
+                    ) : notificationHomeQuery.data.notifications.length ? (
+                      <ul className="max-h-80 divide-y divide-slate-100 overflow-y-auto">
+                        {notificationHomeQuery.data.notifications.map((notification) => (
+                          <li key={notification.id} className="flex items-start gap-2 px-4 py-3 hover:bg-slate-50">
+                            <Link
+                              to="/notifications"
+                              onClick={() => setNotificationsOpen(false)}
+                              className="min-w-0 flex-1"
+                            >
+                              <span className="block truncate text-xs leading-5 text-slate-700">{notification.message}</span>
+                              <span className="mt-1 block text-[11px] text-slate-400">
+                                {notification.readAt ? '확인한 알림' : '읽지 않은 알림'}
+                              </span>
+                            </Link>
+                            {!notification.readAt && (
+                              <button
+                                type="button"
+                                aria-label="알림 읽음 처리"
+                                onClick={() => markReadMutation.mutate(notification.id)}
+                                disabled={markReadMutation.isPending}
+                                className="shrink-0 rounded px-2 py-1 text-xs text-slate-500 hover:bg-slate-200 disabled:opacity-50"
+                              >
+                                읽음
+                              </button>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="px-4 py-6 text-center text-sm text-slate-500">새 알림이 없습니다.</p>
+                    )}
+                    {markReadMutation.isError || markAllMutation.isError ? (
+                      <p role="alert" className="border-t border-red-100 bg-red-50 px-4 py-3 text-center text-sm text-red-700">읽음 상태를 변경하지 못했습니다. 기존 버튼으로 다시 시도해 주세요.</p>
+                    ) : null}
+                    <Link
+                      to="/notifications"
+                      onClick={() => setNotificationsOpen(false)}
+                      className="block border-t border-slate-100 px-4 py-3 text-center text-xs font-semibold text-[#0B1F3A] hover:bg-slate-50"
+                    >
+                      알림 전체 보기
+                    </Link>
+                  </div>
+                )}
+              </div>
               {user?.role === 'ADMIN' && (
                 <Link to="/admin" className="text-sm text-slate-400 hover:text-white transition-colors">관리자</Link>
               )}
@@ -134,6 +245,9 @@ export default function Header() {
           <Link to="/reservation" onClick={() => setMenuOpen(false)} className="block text-slate-300 hover:text-white">예약</Link>
           {isLoggedIn ? (
             <>
+              <Link to="/notifications" onClick={() => setMenuOpen(false)} className="block text-slate-300 hover:text-white">
+                알림 {notificationHomeQuery.data?.unreadCount ? `(${notificationHomeQuery.data.unreadCount})` : ''}
+              </Link>
               <Link to="/mypage" onClick={() => setMenuOpen(false)} className="block text-slate-300 hover:text-white">마이페이지</Link>
               <button onClick={handleLogout} className="block text-slate-400 hover:text-white">로그아웃</button>
             </>

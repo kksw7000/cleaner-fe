@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
-import { BrowserRouter, Link, Navigate, Route, Routes, useLocation, useNavigationType } from 'react-router-dom';
+import { BrowserRouter, Link, Navigate, Route, Routes, useLocation, useNavigate, useNavigationType } from 'react-router-dom';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
+import { useAuthStore } from '@/store/authStore';
+import { useNotificationStream } from '@/features/notification/useNotificationStream';
 import AdminDashboard from '@/pages/admin/AdminDashboard';
 import AdminLayout from '@/pages/admin/AdminLayout';
 import AdminMembers from '@/pages/admin/AdminMembers';
@@ -28,9 +30,12 @@ import WaxCoating from '@/pages/services/WaxCoating';
 import BoardDetail from '@/pages/board/BoardDetail';
 import BoardList from '@/pages/board/BoardList';
 import BoardWrite from '@/pages/board/BoardWrite';
+import Notifications from '@/pages/Notifications';
 
 /** 공통 헤더와 푸터가 필요한 페이지에만 공개 레이아웃을 적용합니다. */
 function PublicLayout({ children }: { children: React.ReactNode }) {
+  useNotificationStream();
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -38,6 +43,25 @@ function PublicLayout({ children }: { children: React.ReactNode }) {
       <Footer />
     </div>
   );
+}
+
+/** 만료된 Refresh Token 때문에 인증을 복구하지 못하면 로그인 화면으로 안전하게 이동합니다. */
+function AuthExpiryHandler() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const logout = useAuthStore((state) => state.logout);
+
+  useEffect(() => {
+    const handleExpiredSession = () => {
+      logout();
+      navigate('/login', { replace: true, state: { from: location.pathname } });
+    };
+
+    window.addEventListener('auth:expired', handleExpiredSession);
+    return () => window.removeEventListener('auth:expired', handleExpiredSession);
+  }, [location.pathname, logout, navigate]);
+
+  return null;
 }
 
 function ScrollToTop() {
@@ -67,8 +91,24 @@ function NotFound() {
 
 /** URL을 화면 컴포넌트에 연결하고 앱 전체에 브라우저 라우팅을 제공합니다. */
 export default function Router() {
+  const isInitializing = useAuthStore((state) => state.isInitializing);
+  const restoreFailed = useAuthStore((state) => state.restoreFailed);
+  const restoreSession = useAuthStore((state) => state.restoreSession);
+
+  useEffect(() => {
+    void restoreSession();
+  }, [restoreSession]);
+
+  if (isInitializing) {
+    return <div role="status" className="flex min-h-screen items-center justify-center text-sm text-slate-500">계정 정보를 불러오는 중입니다.</div>;
+  }
+  if (restoreFailed) {
+    return <div className="flex min-h-screen flex-col items-center justify-center gap-4 text-sm text-slate-600"><p role="alert">계정 정보를 불러오지 못했습니다.</p><button type="button" onClick={() => void restoreSession()} className="rounded bg-[#0B1F3A] px-4 py-2 font-semibold text-white">다시 시도</button></div>;
+  }
+
   return (
     <BrowserRouter>
+      <AuthExpiryHandler />
       <ScrollToTop />
       <Routes>
         <Route path="/login" element={<Login />} />
@@ -99,6 +139,7 @@ export default function Router() {
         <Route path="/portfolio" element={<Navigate to="/board" replace />} />
         <Route path="/reservation" element={<PublicLayout><Reservation /></PublicLayout>} />
         <Route path="/mypage" element={<PublicLayout><MyPage /></PublicLayout>} />
+        <Route path="/notifications" element={<PublicLayout><Notifications /></PublicLayout>} />
         <Route path="/board" element={<PublicLayout><BoardList /></PublicLayout>} />
         <Route path="/board/:id" element={<PublicLayout><BoardDetail /></PublicLayout>} />
         <Route path="/board/new" element={<PublicLayout><BoardWrite /></PublicLayout>} />
