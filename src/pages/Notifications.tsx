@@ -109,9 +109,9 @@ export default function Notifications() {
               다시 시도
             </button>
           </div>
-        ) : pageData && pageData.notifications.length > 0 ? (
+        ) : pageData && (pageData.notifications.length > 0 || pageData.page > 0) ? (
           <>
-            <div className="space-y-3">
+            {pageData.notifications.length > 0 ? <div className="space-y-3">
               {pageData.notifications.map((notification) => {
                 const isUnread = notification.readAt === null;
                 return (
@@ -147,7 +147,7 @@ export default function Notifications() {
                   </article>
                 );
               })}
-            </div>
+            </div> : <div className="rounded-xl border border-slate-200 bg-white px-6 py-16 text-center"><h2 className="font-semibold text-slate-800">아직 알림이 없습니다.</h2></div>}
             <nav aria-label="알림 페이지 이동" className="mt-6 flex items-center justify-between">
               <button
                 type="button"

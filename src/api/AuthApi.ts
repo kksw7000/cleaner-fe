@@ -1,5 +1,5 @@
 import { apiClient } from "@/api/ApiClient";
-import type { SignupResponse, TokenResponse } from "@/api/contracts";
+import type { MyPageResponse, SignupResponse, TokenResponse } from "@/api/contracts";
 
 /** 이메일·비밀번호 로그인은 백엔드의 실제 /api/auth/login 계약으로만 호출합니다. */
 export async function login(email: string, password: string): Promise<TokenResponse> {
@@ -26,4 +26,9 @@ export async function signup(
 /** 로그아웃 API를 호출해 브라우저의 HttpOnly Refresh Token 쿠키를 만료시킵니다. */
 export async function logoutFromServer(): Promise<void> {
   await apiClient.post('/api/auth/logout');
+}
+
+export async function getCurrentProfile(): Promise<MyPageResponse> {
+  const { data } = await apiClient.get<MyPageResponse>('/api/mypage');
+  return data;
 }

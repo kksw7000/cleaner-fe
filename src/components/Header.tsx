@@ -185,6 +185,9 @@ export default function Header() {
                     ) : (
                       <p className="px-4 py-6 text-center text-sm text-slate-500">새 알림이 없습니다.</p>
                     )}
+                    {markReadMutation.isError || markAllMutation.isError ? (
+                      <p role="alert" className="border-t border-red-100 bg-red-50 px-4 py-3 text-center text-sm text-red-700">읽음 상태를 변경하지 못했습니다. 기존 버튼으로 다시 시도해 주세요.</p>
+                    ) : null}
                     <Link
                       to="/notifications"
                       onClick={() => setNotificationsOpen(false)}

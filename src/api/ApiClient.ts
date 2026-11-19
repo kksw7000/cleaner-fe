@@ -1,5 +1,6 @@
 import axios, { type InternalAxiosRequestConfig } from "axios";
 import type { TokenResponse } from "@/api/contracts";
+import { getSessionGeneration } from "@/api/sessionGeneration";
 
 /** API 주소는 배포 환경마다 달라지므로 Vite 환경 변수에서만 읽고 코드에는 서버 주소를 남기지 않습니다. */
 export const apiClient = axios.create({
@@ -12,27 +13,32 @@ const authRefreshClient = axios.create({
   withCredentials: true,
 });
 
-let refreshRequest: Promise<string> | null = null;
+let refreshRequest: { generation: number; promise: Promise<string> } | null = null;
 
 /** Refresh Token 쿠키로 Access Token을 갱신하고 동시 만료 요청은 하나의 요청으로 합칩니다. */
 export function refreshAccessToken(): Promise<string> {
-  if (!refreshRequest) {
-    refreshRequest = authRefreshClient
+  const generation = getSessionGeneration();
+  if (refreshRequest?.generation === generation) return refreshRequest.promise;
+
+  const promise = authRefreshClient
       .post<TokenResponse>("/api/auth/refresh")
       .then(({ data }) => {
+        if (getSessionGeneration() !== generation) throw new Error("Session changed during token refresh");
         sessionStorage.setItem("accessToken", data.accessToken);
         return data.accessToken;
       })
       .catch((error: unknown) => {
-        sessionStorage.removeItem("accessToken");
-        window.dispatchEvent(new Event("auth:expired"));
+        if (getSessionGeneration() === generation && axios.isAxiosError(error) && error.response?.status === 401) {
+          sessionStorage.removeItem("accessToken");
+          window.dispatchEvent(new Event("auth:expired"));
+        }
         throw error;
       })
       .finally(() => {
-        refreshRequest = null;
+        if (refreshRequest?.promise === promise) refreshRequest = null;
       });
-  }
-  return refreshRequest;
+  refreshRequest = { generation, promise };
+  return promise;
 }
 
 /** Access Token은 매 요청에서만 붙여 XSS 노출 범위를 줄이고, Refresh Token은 HttpOnly 쿠키에 맡깁니다. */
@@ -58,7 +64,9 @@ apiClient.interceptors.response.use(
     }
 
     config._retry = true;
+    const generation = getSessionGeneration();
     const accessToken = await refreshAccessToken();
+    if (getSessionGeneration() !== generation) return Promise.reject(error);
     config.headers.Authorization = `Bearer ${accessToken}`;
     return apiClient(config);
   },

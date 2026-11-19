@@ -91,6 +91,17 @@ function NotFound() {
 
 /** URL을 화면 컴포넌트에 연결하고 앱 전체에 브라우저 라우팅을 제공합니다. */
 export default function Router() {
+  const isInitializing = useAuthStore((state) => state.isInitializing);
+  const restoreSession = useAuthStore((state) => state.restoreSession);
+
+  useEffect(() => {
+    void restoreSession();
+  }, [restoreSession]);
+
+  if (isInitializing) {
+    return <div role="status" className="flex min-h-screen items-center justify-center text-sm text-slate-500">계정 정보를 불러오는 중입니다.</div>;
+  }
+
   return (
     <BrowserRouter>
       <AuthExpiryHandler />

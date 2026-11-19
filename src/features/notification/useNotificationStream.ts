@@ -45,6 +45,7 @@ export function useNotificationStream(): void {
     const connect = async () => {
       let retryDelay = 1000;
 
+      let refreshedAfterUnauthorized = false;
       while (!controller.signal.aborted) {
         try {
           const accessToken = sessionStorage.getItem('accessToken');
@@ -62,6 +63,10 @@ export function useNotificationStream(): void {
           });
 
           if (response.status === 401) {
+            if (refreshedAfterUnauthorized) {
+              throw new Error('Notification stream remained unauthorized after token refresh');
+            }
+            refreshedAfterUnauthorized = true;
             await refreshAccessToken();
             continue;
           }
@@ -73,9 +78,12 @@ export function useNotificationStream(): void {
           }
 
           retryDelay = 1000;
+          refreshedAfterUnauthorized = false;
+          invalidateNotifications();
           const reader = response.body.getReader();
           const decoder = new TextDecoder();
           let buffer = '';
+          let frame = '';
 
           while (!controller.signal.aborted) {
             const { done, value } = await reader.read();
@@ -83,12 +91,19 @@ export function useNotificationStream(): void {
               break;
             }
 
-            buffer += decoder.decode(value, { stream: true }).replace(/\r\n/g, '\n');
-            let frameEnd = buffer.indexOf('\n\n');
-            while (frameEnd >= 0) {
-              handleServerEvent(buffer.slice(0, frameEnd), invalidateNotifications);
-              buffer = buffer.slice(frameEnd + 2);
-              frameEnd = buffer.indexOf('\n\n');
+            buffer += decoder.decode(value, { stream: true });
+            while (buffer.length > 0) {
+              const newlineIndex = buffer.search(/[\r\n]/);
+              if (newlineIndex < 0 || (buffer[newlineIndex] === '\r' && newlineIndex === buffer.length - 1)) break;
+              const line = buffer.slice(0, newlineIndex);
+              const delimiterLength = buffer[newlineIndex] === '\r' && buffer[newlineIndex + 1] === '\n' ? 2 : 1;
+              buffer = buffer.slice(newlineIndex + delimiterLength);
+              if (line === '') {
+                handleServerEvent(frame, invalidateNotifications);
+                frame = '';
+              } else {
+                frame += `${frame ? '\n' : ''}${line}`;
+              }
             }
           }
         } catch (error) {
@@ -100,6 +115,7 @@ export function useNotificationStream(): void {
 
         await new Promise((resolve) => window.setTimeout(resolve, retryDelay));
         retryDelay = Math.min(retryDelay * 2, 30000);
+        refreshedAfterUnauthorized = false;
       }
     };
 
