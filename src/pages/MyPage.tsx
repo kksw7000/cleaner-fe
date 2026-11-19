@@ -2,12 +2,20 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/store/authStore';
 import { mockReservations, type ReservationStatus } from '@/data/mockData';
+import { logoutFromServer } from '@/api/AuthApi';
 
 const statusColors: Record<ReservationStatus, string> = {
   PENDING: 'bg-amber-900/30 text-amber-400 border border-amber-700/30',
   CONFIRMED: 'bg-blue-900/30 text-blue-400 border border-blue-700/30',
   COMPLETED: 'bg-teal-900/30 text-teal-400 border border-teal-700/30',
   CANCELED: 'bg-slate-800 text-slate-400 border border-slate-700',
+};
+
+const statusLabels: Record<ReservationStatus, string> = {
+  PENDING: '예약 대기',
+  CONFIRMED: '예약 확정',
+  COMPLETED: '완료',
+  CANCELED: '취소',
 };
 
 type Tab = 'profile' | 'reservations';
@@ -24,6 +32,13 @@ export default function MyPage() {
 
   const handleSave = () => { updateUser(form); setEditing(false); };
   const filtered = filterStatus === 'ALL' ? mockReservations : mockReservations.filter((r) => r.status === filterStatus);
+  const handleLogout = () => {
+    logout();
+    void logoutFromServer().catch((error: unknown) => {
+      console.error('로그아웃 쿠키를 서버에서 만료하지 못했습니다.', error);
+    });
+    navigate('/');
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -43,7 +58,7 @@ export default function MyPage() {
               <button key={t} onClick={() => setTab(t)}
                 className={`text-sm font-medium pb-3 border-b-2 transition-colors capitalize ${tab === t ? 'border-white text-white' : 'border-transparent text-slate-400 hover:text-white'}`}
               >
-                {t === 'profile' ? 'My Profile' : 'Reservations'}
+                {t === 'profile' ? '내 정보' : '예약 내역'}
               </button>
             ))}
           </div>
@@ -54,36 +69,38 @@ export default function MyPage() {
         {tab === 'profile' && (
           <div className="bg-white border border-slate-200 rounded-xl p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="font-black text-[#0B1F3A]" style={{ fontFamily: 'Outfit' }}>Personal Information</h2>
+              <h2 className="font-black text-[#0B1F3A]" style={{ fontFamily: 'Outfit' }}>개인정보</h2>
               {!editing ? (
-                <button onClick={() => setEditing(true)} className="text-sm text-[#0B1F3A] hover:underline font-semibold">Edit</button>
+                <button onClick={() => setEditing(true)} className="text-sm text-[#0B1F3A] hover:underline font-semibold">수정</button>
               ) : (
                 <div className="flex gap-3">
-                  <button onClick={() => setEditing(false)} className="text-sm text-slate-500 hover:text-slate-700">Cancel</button>
-                  <button onClick={handleSave} className="text-sm px-5 py-1.5 bg-[#0B1F3A] text-white rounded font-semibold hover:bg-[#060F1E] transition-colors">Save</button>
+                  <button onClick={() => setEditing(false)} className="text-sm text-slate-500 hover:text-slate-700">취소</button>
+                  <button onClick={handleSave} className="text-sm px-5 py-1.5 bg-[#0B1F3A] text-white rounded font-semibold hover:bg-[#060F1E] transition-colors">저장</button>
                 </div>
               )}
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div>
-                <label className="text-xs text-slate-400 block mb-1">Email</label>
+                <label className="text-xs text-slate-400 block mb-1">이메일</label>
                 <p className="text-sm text-slate-700">{user?.email}</p>
               </div>
               <div>
-                <label className="text-xs text-slate-400 block mb-1">Role</label>
-                <span className={`inline-block text-xs px-2 py-0.5 rounded font-medium ${user?.role === 'ADMIN' ? 'bg-purple-100 text-purple-700' : 'bg-slate-100 text-slate-600'}`}>{user?.role}</span>
+                <label className="text-xs text-slate-400 block mb-1">회원 유형</label>
+                <span className={`inline-block text-xs px-2 py-0.5 rounded font-medium ${user?.role === 'ADMIN' ? 'bg-purple-100 text-purple-700' : 'bg-slate-100 text-slate-600'}`}>
+                  {user?.role === 'ADMIN' ? '관리자' : user?.role === 'USER' ? '일반 회원' : '—'}
+                </span>
               </div>
               <div>
-                <label className="text-xs text-slate-400 block mb-1">Nickname</label>
+                <label className="text-xs text-slate-400 block mb-1">닉네임</label>
                 {editing ? <input value={form.nickname} onChange={(e) => setForm({ ...form, nickname: e.target.value })} className="w-full border border-slate-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1F3A]" /> : <p className="text-sm text-slate-700">{user?.nickname}</p>}
               </div>
               <div>
-                <label className="text-xs text-slate-400 block mb-1">Phone</label>
+                <label className="text-xs text-slate-400 block mb-1">전화번호</label>
                 {editing ? <input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="w-full border border-slate-200 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0B1F3A]" placeholder="010-0000-0000" /> : <p className="text-sm text-slate-700">{user?.phone || '—'}</p>}
               </div>
             </div>
             <div className="mt-8 pt-5 border-t border-slate-100">
-              <button onClick={() => { logout(); navigate('/'); }} className="text-sm text-red-500 hover:text-red-600 font-medium">Sign Out</button>
+              <button onClick={handleLogout} className="text-sm text-red-500 hover:text-red-600 font-medium">로그아웃</button>
             </div>
           </div>
         )}
@@ -95,7 +112,7 @@ export default function MyPage() {
                 <button key={s} onClick={() => setFilterStatus(s)}
                   className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${filterStatus === s ? 'bg-[#0B1F3A] text-white' : 'border border-slate-200 text-slate-600 hover:border-[#0B1F3A]'}`}
                 >
-                  {s === 'ALL' ? 'All' : s}
+                  {s === 'ALL' ? '전체' : statusLabels[s]}
                 </button>
               ))}
             </div>
@@ -106,13 +123,13 @@ export default function MyPage() {
                     <h3 className="font-bold text-[#0B1F3A] text-sm" style={{ fontFamily: 'Outfit' }}>{r.serviceName}</h3>
                     <p className="text-xs text-slate-500 mt-1">{r.reservationDate} · {r.address}</p>
                     {r.memo && <p className="text-xs text-slate-400 mt-1 italic">"{r.memo}"</p>}
-                    <p className="text-xs text-slate-300 mt-2">Booked {r.createdAt}</p>
+                    <p className="text-xs text-slate-300 mt-2">예약 신청일 {r.createdAt}</p>
                   </div>
-                  <span className={`text-xs font-semibold px-2.5 py-1 rounded ${statusColors[r.status]}`}>{r.status}</span>
+                  <span className={`text-xs font-semibold px-2.5 py-1 rounded ${statusColors[r.status]}`}>{statusLabels[r.status]}</span>
                 </div>
               ))}
               {filtered.length === 0 && (
-                <div className="text-center py-14 text-slate-400"><p>No reservations in this status.</p></div>
+                <div className="text-center py-14 text-slate-400"><p>해당 상태의 예약 내역이 없습니다.</p></div>
               )}
             </div>
           </div>

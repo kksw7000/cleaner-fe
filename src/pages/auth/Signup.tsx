@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuthStore } from '@/store/authStore';
+import axios from 'axios';
+import { signup as signupApi } from '@/api/AuthApi';
 
 /** 회원가입 입력 상태와 비밀번호 확인값을 함께 담습니다. */
 interface SignupForm {
@@ -27,17 +28,59 @@ const signupFields: SignupField[] = [
   { label: '비밀번호 확인', type: 'password', key: 'confirm', placeholder: '비밀번호를 다시 입력하세요' },
 ];
 
+function getSignupErrorMessage(error: unknown): string {
+  if (!axios.isAxiosError(error)) {
+    return '회원가입 중 오류가 발생했습니다. 입력한 정보를 확인해 주세요.';
+  }
+
+  const responseData: unknown = error.response?.data;
+  if (typeof responseData === 'object' && responseData !== null && 'message' in responseData
+    && typeof responseData.message === 'string') {
+    return responseData.message;
+  }
+
+  if (!error.response) {
+    return '서버에 연결할 수 없습니다. 서버 상태를 확인한 뒤 다시 시도해 주세요.';
+  }
+  if (error.response.status === 404) {
+    return '회원가입 API를 찾을 수 없습니다. 서버 주소와 실행 상태를 확인해 주세요.';
+  }
+  if (error.response.status === 400) {
+    return '입력한 이메일, 비밀번호, 닉네임 또는 전화번호 형식을 확인해 주세요.';
+  }
+  if (error.response.status === 409) {
+    return '이미 가입된 이메일 또는 전화번호인지 확인해 주세요.';
+  }
+  return '서버 오류로 회원가입에 실패했습니다. 잠시 후 다시 시도해 주세요.';
+}
+
 export default function Signup() {
   const navigate = useNavigate();
-  const { login } = useAuthStore();
   const [form, setForm] = useState<SignupForm>({ email: '', password: '', confirm: '', nickname: '', phone: '' });
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (form.password !== form.confirm) { setError('비밀번호가 일치하지 않습니다.'); return; }
-    login(form.email, 'USER', form.nickname.trim());
-    navigate('/');
+    if (form.password.length < 8 || form.password.length > 30) {
+      setError('비밀번호는 8~30자로 입력해 주세요.');
+      return;
+    }
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(form.password)) {
+      setError('비밀번호에 허용된 특수문자(!@#$%^&*(),.?":{}|<>)를 1개 이상 포함해 주세요.');
+      return;
+    }
+    setError('');
+    setIsSubmitting(true);
+    try {
+      await signupApi(form.email, form.password, form.nickname.trim(), form.phone.trim());
+      navigate('/login', { state: { registered: true } });
+    } catch (signupError: unknown) {
+      setError(getSignupErrorMessage(signupError));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -55,18 +98,24 @@ export default function Signup() {
             {error && <p className="text-sm text-red-400 bg-red-900/20 border border-red-800/30 rounded p-3">{error}</p>}
             {signupFields.map((f) => (
               <div key={f.key}>
-                <label className="text-xs font-medium text-slate-400 block mb-1.5">{f.label}</label>
+                <label htmlFor={f.key} className="text-xs font-medium text-slate-400 block mb-1.5">{f.label}</label>
                 <input
+                  id={f.key}
                   type={f.type}
-                  required={f.key !== 'phone'}
+                  required
                   placeholder={f.placeholder}
                   value={form[f.key]}
                   onChange={(e) => setForm({ ...form, [f.key]: e.target.value })}
                   className="w-full bg-white/5 border border-white/10 rounded px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-white/30"
                 />
+                {f.key === 'password' && (
+                  <p className="mt-1.5 text-xs text-slate-500">
+                    {'8~30자이며 허용된 특수문자(!@#$%^&*(),.?":{}|<>)를 1개 이상 포함해야 합니다.'}
+                  </p>
+                )}
               </div>
             ))}
-            <button type="submit" className="w-full py-3 bg-white text-[#0B1F3A] font-black rounded hover:bg-slate-100 transition-colors text-sm tracking-wide">
+            <button type="submit" disabled={isSubmitting} className="w-full py-3 bg-white text-[#0B1F3A] font-black rounded hover:bg-slate-100 transition-colors text-sm tracking-wide disabled:cursor-not-allowed disabled:opacity-60">
               가입하기
             </button>
           </form>

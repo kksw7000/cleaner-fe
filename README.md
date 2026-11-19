@@ -21,6 +21,8 @@ VITE_API_BASE_URL=http://localhost:8080
 
 API 요청 코드는 이 환경 변수를 통해 주소를 읽어야 하며, 서버 주소를 코드에 직접 작성하지 않습니다.
 
+개발 서버에서는 Vite가 `/api` 요청을 이 주소로 프록시하므로 브라우저의 교차 출처 쿠키·SSE 제약을 피할 수 있습니다. 배포 환경에서는 프론트엔드와 백엔드 origin이 다를 경우 백엔드 CORS 설정에서 프론트 origin과 credentials를 허용해야 합니다.
+
 ## 검증
 
 ```bash
