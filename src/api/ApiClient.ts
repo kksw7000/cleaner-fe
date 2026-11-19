@@ -43,6 +43,7 @@ export function refreshAccessToken(): Promise<string> {
 
 /** Access Token은 매 요청에서만 붙여 XSS 노출 범위를 줄이고, Refresh Token은 HttpOnly 쿠키에 맡깁니다. */
 apiClient.interceptors.request.use((config) => {
+  (config as InternalAxiosRequestConfig & { _sessionGeneration?: number })._sessionGeneration = getSessionGeneration();
   const accessToken = sessionStorage.getItem("accessToken");
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
@@ -58,13 +59,14 @@ apiClient.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    const config = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
+    const config = error.config as InternalAxiosRequestConfig & { _retry?: boolean; _sessionGeneration?: number };
     if (config._retry || config.url?.startsWith("/api/auth/")) {
       return Promise.reject(error);
     }
 
+    if (config._sessionGeneration !== getSessionGeneration()) return Promise.reject(error);
     config._retry = true;
-    const generation = getSessionGeneration();
+    const generation = config._sessionGeneration;
     const accessToken = await refreshAccessToken();
     if (getSessionGeneration() !== generation) return Promise.reject(error);
     config.headers.Authorization = `Bearer ${accessToken}`;
