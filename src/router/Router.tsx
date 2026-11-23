@@ -45,6 +45,20 @@ function PublicLayout({ children }: { children: React.ReactNode }) {
   );
 }
 
+/** 관리자 화면의 목업 데이터와 실제 관리자 API를 일반 회원이 열람하지 못하도록 접근을 제한합니다. */
+function AdminRoute({ children }: { children: React.ReactNode }) {
+  const { isLoggedIn, user } = useAuthStore();
+  const location = useLocation();
+
+  if (!isLoggedIn) {
+    return <Navigate to="/login" replace state={{ from: location.pathname }} />;
+  }
+  if (user?.role !== 'ADMIN') {
+    return <Navigate to="/" replace />;
+  }
+  return <>{children}</>;
+}
+
 /** 만료된 Refresh Token 때문에 인증을 복구하지 못하면 로그인 화면으로 안전하게 이동합니다. */
 function AuthExpiryHandler() {
   const navigate = useNavigate();
@@ -114,7 +128,7 @@ export default function Router() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
-        <Route path="/admin" element={<AdminLayout />}>
+        <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
           <Route index element={<AdminDashboard />} />
           <Route path="members" element={<AdminMembers />} />
           <Route path="posts" element={<AdminPosts />} />

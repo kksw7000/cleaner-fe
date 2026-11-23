@@ -87,7 +87,7 @@ export default function MyPage() {
               <div>
                 <label className="text-xs text-slate-400 block mb-1">회원 유형</label>
                 <span className={`inline-block text-xs px-2 py-0.5 rounded font-medium ${user?.role === 'ADMIN' ? 'bg-purple-100 text-purple-700' : 'bg-slate-100 text-slate-600'}`}>
-                  {user?.role === 'ADMIN' ? '관리자' : user?.role === 'USER' ? '일반 회원' : '—'}
+                  {user?.role === 'ADMIN' ? '관리자' : '일반 회원'}
                 </span>
               </div>
               <div>

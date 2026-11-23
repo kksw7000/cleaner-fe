@@ -6,7 +6,7 @@ import { login as loginApi } from '@/api/AuthApi';
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { login } = useAuthStore();
+  const { login, restoreSession } = useAuthStore();
   const locationState = location.state as { from?: unknown; draftComment?: unknown; registered?: unknown } | null;
   const from = typeof locationState?.from === 'string' ? locationState.from : '/';
   const returnState = typeof locationState?.draftComment === 'string'
@@ -25,8 +25,11 @@ export default function Login() {
     setIsSubmitting(true);
     try {
       const tokenResponse = await loginApi(form.email, form.password);
-      const role = form.email === 'admin@cleaner.com' ? 'ADMIN' : 'USER';
-      login(form.email, tokenResponse.accessToken, role);
+      const role = tokenResponse.role;
+      // 로그인 직후에도 회원가입 시 저장한 닉네임을 표시하도록 서버 응답의 이름을 전달합니다.
+      login(form.email, tokenResponse.accessToken, role, tokenResponse.name);
+      // 마이페이지로 이동하기 전에 본인 프로필을 조회해 전화번호를 포함한 최신 정보를 채웁니다.
+      await restoreSession(false);
       navigate(from, { state: returnState });
     } catch {
       setError('로그인에 실패했습니다. 이메일과 비밀번호를 확인해 주세요.');
