@@ -19,7 +19,7 @@ interface AuthStore {
   nicknamesByEmail: Record<string, string>;
   login: (email: string, accessToken: string, role?: 'USER' | 'ADMIN', nickname?: string) => void;
   logout: () => void;
-  restoreSession: () => Promise<void>;
+  restoreSession: (showLoading?: boolean) => Promise<void>;
   updateUser: (data: Partial<User>) => void;
 }
 
@@ -55,14 +55,19 @@ export const useAuthStore = create<AuthStore>((set) => ({
     sessionStorage.removeItem('userRole');
     set({ user: null, isLoggedIn: false, isInitializing: false, restoreFailed: false });
   },
-  restoreSession: async () => {
+  restoreSession: async (showLoading = true) => {
     const accessToken = sessionStorage.getItem('accessToken');
     if (!accessToken) {
       set({ user: null, isLoggedIn: false, isInitializing: false, restoreFailed: false });
       return;
     }
     const generation = getSessionGeneration();
-    set({ isInitializing: true, restoreFailed: false });
+    // 로그인 직후의 프로필 보강은 현재 라우터를 유지해야 하므로 전체 화면 로딩을 표시하지 않습니다.
+    if (showLoading) {
+      set({ isInitializing: true, restoreFailed: false });
+    } else {
+      set({ restoreFailed: false });
+    }
     try {
       const profile = await getCurrentProfile();
       if (getSessionGeneration() !== generation) return;
@@ -72,7 +77,10 @@ export const useAuthStore = create<AuthStore>((set) => ({
           email: profile.email,
           nickname: profile.name || state.nicknamesByEmail[profile.email] || profile.email.split('@')[0],
           phone: profile.phoneNumber,
-          role: sessionStorage.getItem('userRole') === 'ADMIN' ? 'ADMIN' : 'USER',
+          // 구버전 서버 응답에 role이 없더라도 로그인 시 확정한 권한을 잃지 않습니다.
+          role: profile.role === 'ADMIN' || profile.role === 'USER'
+            ? profile.role
+            : state.user?.role || (sessionStorage.getItem('userRole') === 'ADMIN' ? 'ADMIN' : 'USER'),
         },
         isLoggedIn: true,
         isInitializing: false,
