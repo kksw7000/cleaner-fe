@@ -95,6 +95,11 @@ export const useAuthStore = create<AuthStore>((set) => ({
         set({ user: null, isLoggedIn: false, isInitializing: false, restoreFailed: false });
         return;
       }
+      // 로그인 직후의 선택적 프로필 보강 실패는 이미 완료된 인증과 화면 이용을 막지 않습니다.
+      if (!showLoading) {
+        set({ isInitializing: false, restoreFailed: false });
+        return;
+      }
       set({ isInitializing: false, restoreFailed: true });
     }
   },
