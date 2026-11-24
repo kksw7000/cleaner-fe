@@ -17,10 +17,8 @@ export const categoryPhotos: Record<ServiceCategory, string[]> = {
     'photo-1493663284031-b7e3aefcae8e',
     '/images/services/mattress/매트1.jpg',
     '/images/services/mattress/매트2.jpg',
-    '/images/services/mattress/매트3.jpg',
     '/images/services/mattress/매트4.jpg',
     '/images/services/mattress/매트5.jpg',
-    '/images/services/mattress/매트6.jpg',
     '/images/services/mattress/매트8.jpg',
   ],
   FABRIC: [

@@ -61,7 +61,7 @@ export default function ServiceDetail() {
       {/* Hero */}
       <div className="relative bg-[#0B1F3A] text-white h-64 overflow-hidden">
         <img
-          src={`https://images.unsplash.com/${photos[0]}?w=1400&h=400&fit=crop&auto=format`}
+          src={photos[0].startsWith('/') ? photos[0] : `https://images.unsplash.com/${photos[0]}?w=1400&h=400&fit=crop&auto=format`}
           alt={service.name}
           className="absolute inset-0 w-full h-full object-cover opacity-25"
         />
@@ -97,7 +97,7 @@ export default function ServiceDetail() {
             <div className="grid grid-cols-3 gap-2 mb-4">
               {photos.slice(0, 6).map((pid, i) => (
                 <div key={i} className="aspect-square overflow-hidden rounded bg-slate-100">
-                  <img src={`https://images.unsplash.com/${pid}?w=300&h=300&fit=crop&auto=format`} alt="" className="w-full h-full object-cover" />
+                  <img src={pid.startsWith('/') ? pid : `https://images.unsplash.com/${pid}?w=300&h=300&fit=crop&auto=format`} alt="" className="w-full h-full object-cover" />
                 </div>
               ))}
             </div>

@@ -42,7 +42,9 @@ export default function CategoryPage({ categoryOverride }: CategoryPageProps) {
   const photos = categoryPhotos[catKey];
   const visiblePhotos = photos.filter((id) => id && !failedPhotoIds.includes(id));
   const totalPages = Math.ceil(visiblePhotos.length / PHOTOS_PER_PAGE);
-  const pagePhotos = visiblePhotos.slice((page - 1) * PHOTOS_PER_PAGE, page * PHOTOS_PER_PAGE);
+  // 이미지 로드 실패로 사진 수가 줄어도 현재 페이지를 유효한 범위에 유지합니다.
+  const currentPage = Math.min(Math.max(page, 1), Math.max(totalPages, 1));
+  const pagePhotos = visiblePhotos.slice((currentPage - 1) * PHOTOS_PER_PAGE, currentPage * PHOTOS_PER_PAGE);
   const relatedServices = services.filter((s) => s.category === catKey);
 
   return (
@@ -97,33 +99,41 @@ export default function CategoryPage({ categoryOverride }: CategoryPageProps) {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-2xl font-black text-[#0B1F3A]">작업 사진</h2>
-            <p className="text-slate-400 text-sm mt-1">사진 {visiblePhotos.length}장 · {totalPages}페이지 중 {page}페이지</p>
+            <p className="text-slate-400 text-sm mt-1">
+              {totalPages > 0 ? `사진 ${visiblePhotos.length}장 · ${totalPages}페이지 중 ${currentPage}페이지` : '사진 0장'}
+            </p>
           </div>
         </div>
 
         {/* 3×3 Photo Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 md:gap-3">
-          {pagePhotos.map((id, i) => (
-            <div
-              key={`${id}-${i}`}
-              className="relative aspect-square overflow-hidden rounded-lg bg-slate-100"
-            >
-              <img
-                src={id.startsWith('/') ? id : `https://images.unsplash.com/${id}?w=500&auto=format`}
-                alt={`${categoryLabels[catKey]} 작업 사진 ${(page - 1) * PHOTOS_PER_PAGE + i + 1}`}
-                className="w-full h-full object-cover object-center"
-                onError={() => setFailedPhotoIds((ids) => (ids.includes(id) ? ids : [...ids, id]))}
-              />
-            </div>
-          ))}
-        </div>
+        {pagePhotos.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 md:gap-3">
+            {pagePhotos.map((id, i) => (
+              <div
+                key={`${id}-${i}`}
+                className="relative aspect-square overflow-hidden rounded-lg bg-slate-100"
+              >
+                <img
+                  src={id.startsWith('/') ? id : `https://images.unsplash.com/${id}?w=500&auto=format`}
+                  alt={`${categoryLabels[catKey]} 작업 사진 ${(currentPage - 1) * PHOTOS_PER_PAGE + i + 1}`}
+                  className="w-full h-full object-cover object-center"
+                  onError={() => setFailedPhotoIds((ids) => (ids.includes(id) ? ids : [...ids, id]))}
+                />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-lg bg-slate-50 px-6 py-12 text-center text-sm text-slate-500">
+            표시할 작업 사진이 없습니다.
+          </div>
+        )}
 
         {/* Pagination */}
         {totalPages > 1 && (
           <div className="flex items-center justify-center gap-3 mt-10">
             <button
-              onClick={() => { setPage((p) => Math.max(1, p - 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              disabled={page === 1}
+              onClick={() => { setPage(currentPage - 1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              disabled={currentPage === 1}
               className="px-5 py-2 border border-slate-200 rounded text-sm font-medium text-slate-600 hover:border-[#0B1F3A] hover:text-[#0B1F3A] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
             >
               ← 이전
@@ -133,15 +143,15 @@ export default function CategoryPage({ categoryOverride }: CategoryPageProps) {
                 <button
                   key={p}
                   onClick={() => { setPage(p); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                  className={`w-9 h-9 text-sm font-medium rounded transition-colors ${p === page ? 'bg-[#0B1F3A] text-white' : 'text-slate-500 hover:bg-slate-100'}`}
+                  className={`w-9 h-9 text-sm font-medium rounded transition-colors ${p === currentPage ? 'bg-[#0B1F3A] text-white' : 'text-slate-500 hover:bg-slate-100'}`}
                 >
                   {p}
                 </button>
               ))}
             </div>
             <button
-              onClick={() => { setPage((p) => Math.min(totalPages, p + 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              disabled={page === totalPages}
+              onClick={() => { setPage(currentPage + 1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              disabled={currentPage === totalPages}
               className="px-5 py-2 border border-slate-200 rounded text-sm font-medium text-slate-600 hover:border-[#0B1F3A] hover:text-[#0B1F3A] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
             >
               다음 →
