@@ -6,29 +6,42 @@ const categories = Object.keys(categoryLabels) as ServiceCategory[];
 
 // 현장 사진을 두 행으로 나누어 서로 다른 이미지가 이어지도록 구성합니다.
 const row1Photos = [
-  'photo-1631049307264-da0ec9d70304',
-  'photo-1504307651254-35680f356dfd',
-  'photo-1497366216548-37526070297c',
-  'photo-1581578731548-c64695cc6952',
-  'photo-1563453392212-326f5e854473',
-  'photo-1527515637462-cff94aca208b',
-  'photo-1630427804340-0b8524e85f25',
-  'photo-1555041469-a586c61ea9bc',
-  'photo-1617103996702-96ff29b1c467',
-  'photo-1558618666-fcd25c85cd64',
+  '/images/services/mattress/매트1.jpg',
+  '/images/services/mattress/매트2.jpg',
+  '/images/services/mattress/매트3.jpg',
+  '/images/services/mattress/매트4.jpg',
+  '/images/services/mattress/매트5.jpg',
+  '/images/services/mattress/매트6.jpg',
+  '/images/services/mattress/매트8.jpg',
+  '/images/services/fabric/소파1.jpg',
+  '/images/services/fabric/소파2.jpg',
+  '/images/services/fabric/소파3.jpg',
+  '/images/services/fabric/소파4.jpg',
+  '/images/services/fabric/소파5.jpg',
+  '/images/services/fabric/소파6.jpg',
+  '/images/services/fabric/소파7.jpg',
+  '/images/services/fabric/소파8.jpg',
+  '/images/services/fabric/소파9.jpg',
 ];
 
 const row2Photos = [
-  'photo-1556912173-3bb406ef7e8a',
-  'photo-1600607688969-a5bfcd646154',
-  'photo-1600585154340-be6161a56a0c',
-  'photo-1524758631624-e2822e304c36',
-  'photo-1614771637369-ed94441a651c',
-  'photo-1567538096630-e0c55bd6374c',
-  'photo-1484101403633-562f891dc89a',
-  'photo-1513161455079-7dc1de15ef3e',
-  'photo-1626806787461-102c1bfaaea1',
-  'photo-1616137466211-f939a420be84',
+  '/images/services/commercial/상가청소1.jpg',
+  '/images/services/commercial/상가청소2.jpg',
+  '/images/services/commercial/상가청소3.jpg',
+  '/images/services/commercial/상가청소4.jpg',
+  '/images/services/commercial/상가청소5.jpg',
+  '/images/services/commercial/상가청소6.jpg',
+  '/images/services/commercial/상가청소7.jpg',
+  '/images/services/commercial/상가청소8.jpg',
+  '/images/services/coating/광택1.jpg',
+  '/images/services/coating/광택2.jpg',
+  '/images/services/coating/광택3.jpg',
+  '/images/services/coating/광택4.jpg',
+  '/images/services/coating/광택5.jpg',
+  '/images/services/coating/광택6.jpg',
+  '/images/services/coating/광택7.jpg',
+  '/images/services/coating/광택8.jpg',
+  '/images/services/coating/광택9.jpg',
 ];
 
 function OnSiteStrip() {
@@ -59,10 +72,10 @@ function OnSiteStrip() {
               style={{ width: '220px', height: '220px' }}
             >
               <img
-                src={`https://images.unsplash.com/${id}?w=440&h=440&fit=crop&auto=format`}
+                src={id}
                 alt=""
                 draggable={false}
-                className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity duration-300"
+                className="w-full h-full object-cover opacity-90"
               />
             </div>
           ))}
@@ -79,10 +92,10 @@ function OnSiteStrip() {
               style={{ width: '220px', height: '220px' }}
             >
               <img
-                src={`https://images.unsplash.com/${id}?w=440&h=440&fit=crop&auto=format`}
+                src={id}
                 alt=""
                 draggable={false}
-                className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity duration-300"
+                className="w-full h-full object-cover opacity-90"
               />
             </div>
           ))}
