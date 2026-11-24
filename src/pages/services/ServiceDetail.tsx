@@ -97,7 +97,7 @@ export default function ServiceDetail() {
             <div className="grid grid-cols-3 gap-2 mb-4">
               {photos.slice(0, 6).map((pid, i) => (
                 <div key={i} className="aspect-square overflow-hidden rounded bg-slate-100">
-                  <img src={`https://images.unsplash.com/${pid}?w=300&h=300&fit=crop&auto=format`} alt="" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+                  <img src={`https://images.unsplash.com/${pid}?w=300&h=300&fit=crop&auto=format`} alt="" className="w-full h-full object-cover" />
                 </div>
               ))}
             </div>

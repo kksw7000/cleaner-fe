@@ -25,7 +25,7 @@ import MoveIn from '@/pages/services/MoveIn';
 import RegularCleaning from '@/pages/services/RegularCleaning';
 import ServiceDetail from '@/pages/services/ServiceDetail';
 import Services from '@/pages/services/Services';
-import SofaCarpet from '@/pages/services/SofaCarpet';
+import Fabric from '@/pages/services/Fabric';
 import WaxCoating from '@/pages/services/WaxCoating';
 import BoardDetail from '@/pages/board/BoardDetail';
 import BoardList from '@/pages/board/BoardList';
@@ -140,7 +140,8 @@ export default function Router() {
         <Route path="/company" element={<Navigate to="/" replace />} />
         <Route path="/services" element={<PublicLayout><Services /></PublicLayout>} />
         <Route path="/services/mattress" element={<PublicLayout><Mattress /></PublicLayout>} />
-        <Route path="/services/sofa_carpet" element={<PublicLayout><SofaCarpet /></PublicLayout>} />
+        <Route path="/services/fabric" element={<PublicLayout><Fabric /></PublicLayout>} />
+        <Route path="/services/sofa_carpet" element={<Navigate to="/services/fabric" replace />} />
         <Route path="/services/move_in" element={<PublicLayout><MoveIn /></PublicLayout>} />
         <Route path="/services/appliance" element={<PublicLayout><Appliance /></PublicLayout>} />
         <Route path="/services/construction" element={<PublicLayout><Construction /></PublicLayout>} />

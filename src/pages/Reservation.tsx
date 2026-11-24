@@ -6,7 +6,7 @@ import { useAuthStore } from '@/store/authStore';
 const serviceNames: Record<number, string> = {
   1: '매트리스 살균 청소',
   2: '매트리스 얼룩 제거',
-  3: '소파 스팀 청소',
+  3: '패브릭 스팀 청소',
   4: '카페트 집중 청소',
   5: '입주 종합 청소',
   6: '퇴거 청소',

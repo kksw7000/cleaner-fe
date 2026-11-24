@@ -7,7 +7,7 @@ const PHOTOS_PER_PAGE = 9;
 
 const categoryDescriptions: Record<ServiceCategory, string> = {
   MATTRESS: '자외선 살균과 고온 스팀으로 매트리스의 진드기, 알레르기 유발 물질, 세균과 냄새를 제거해 새것처럼 쾌적하게 관리합니다.',
-  SOFA_CARPET: '고압 스팀과 온수 추출 방식으로 다양한 패브릭 소파와 카페트의 오염을 말끔히 제거합니다.',
+  FABRIC: '고압 스팀과 온수 추출 방식으로 패브릭 제품의 오염을 말끔히 제거합니다.',
   MOVE_IN: '이사 전후 집 안의 모든 표면과 설비, 수납장, 구석까지 꼼꼼하게 청소해 드립니다.',
   APPLIANCE: '벽걸이·스탠드 에어컨과 세탁기를 분해해 살균 세척한 뒤 꼼꼼하게 재조립합니다.',
   CONSTRUCTION: '공사 후 남은 콘크리트 먼지와 페인트 자국, 접착제 잔여물과 미세 먼지를 전문적으로 제거합니다.',
@@ -26,7 +26,7 @@ export default function CategoryPage({ categoryOverride }: CategoryPageProps) {
   const catKey = categoryOverride ?? (category?.toUpperCase() as ServiceCategory) ?? null;
 
   const [page, setPage] = useState(1);
-  const [lightbox, setLightbox] = useState<string | null>(null);
+  const [failedPhotoIds, setFailedPhotoIds] = useState<string[]>([]);
 
   if (!catKey || !categoryLabels[catKey]) {
     return (
@@ -40,33 +40,13 @@ export default function CategoryPage({ categoryOverride }: CategoryPageProps) {
   }
 
   const photos = categoryPhotos[catKey];
-  const totalPages = Math.ceil(photos.length / PHOTOS_PER_PAGE);
-  const pagePhotos = photos.slice((page - 1) * PHOTOS_PER_PAGE, page * PHOTOS_PER_PAGE);
+  const visiblePhotos = photos.filter((id) => id && !failedPhotoIds.includes(id));
+  const totalPages = Math.ceil(visiblePhotos.length / PHOTOS_PER_PAGE);
+  const pagePhotos = visiblePhotos.slice((page - 1) * PHOTOS_PER_PAGE, page * PHOTOS_PER_PAGE);
   const relatedServices = services.filter((s) => s.category === catKey);
 
   return (
     <div className="bg-white">
-      {/* Lightbox */}
-      {lightbox && (
-        <div
-          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
-          onClick={() => setLightbox(null)}
-        >
-          <img
-            src={`https://images.unsplash.com/${lightbox}?w=1200&h=900&fit=crop&auto=format`}
-            alt=""
-            className="max-w-full max-h-full rounded object-contain"
-            onClick={(e) => e.stopPropagation()}
-          />
-          <button
-            onClick={() => setLightbox(null)}
-            className="absolute top-4 right-4 text-white/60 hover:text-white text-2xl w-10 h-10 flex items-center justify-center"
-          >
-            ✕
-          </button>
-        </div>
-      )}
-
       {/* Hero */}
       <div className="relative min-h-[340px] bg-[#0B1F3A] text-white overflow-hidden flex items-center">
         <div className="absolute inset-0">
@@ -117,32 +97,24 @@ export default function CategoryPage({ categoryOverride }: CategoryPageProps) {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-2xl font-black text-[#0B1F3A]">작업 사진</h2>
-            <p className="text-slate-400 text-sm mt-1">사진 {photos.length}장 · {totalPages}페이지 중 {page}페이지</p>
+            <p className="text-slate-400 text-sm mt-1">사진 {visiblePhotos.length}장 · {totalPages}페이지 중 {page}페이지</p>
           </div>
         </div>
 
         {/* 3×3 Photo Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 md:gap-3">
           {pagePhotos.map((id, i) => (
-            <button
+            <div
               key={`${id}-${i}`}
-              onClick={() => setLightbox(id)}
-              className="group relative aspect-square overflow-hidden rounded-lg bg-slate-100"
+              className="relative aspect-square overflow-hidden rounded-lg bg-slate-100"
             >
               <img
-                src={`https://images.unsplash.com/${id}?w=500&h=500&fit=crop&auto=format`}
+                src={id.startsWith('/') ? id : `https://images.unsplash.com/${id}?w=500&auto=format`}
                 alt={`${categoryLabels[catKey]} 작업 사진 ${(page - 1) * PHOTOS_PER_PAGE + i + 1}`}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                className="w-full h-full object-cover object-center"
+                onError={() => setFailedPhotoIds((ids) => (ids.includes(id) ? ids : [...ids, id]))}
               />
-              <div className="absolute inset-0 bg-[#0B1F3A]/0 group-hover:bg-[#0B1F3A]/20 transition-colors flex items-center justify-center">
-                <svg className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-                </svg>
-              </div>
-              <div className="absolute bottom-2 right-2 bg-black/50 text-white text-xs px-1.5 py-0.5 rounded font-mono opacity-0 group-hover:opacity-100 transition-opacity">
-                {(page - 1) * PHOTOS_PER_PAGE + i + 1}
-              </div>
-            </button>
+            </div>
           ))}
         </div>
 

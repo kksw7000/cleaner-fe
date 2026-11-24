@@ -6,7 +6,7 @@ const categories = Object.keys(categoryLabels) as ServiceCategory[];
 
 const heroImages: Record<ServiceCategory, string> = {
   MATTRESS: 'photo-1631049307264-da0ec9d70304',
-  SOFA_CARPET: 'photo-1555041469-a586c61ea9bc',
+  FABRIC: 'photo-1555041469-a586c61ea9bc',
   MOVE_IN: 'photo-1527515637462-cff94aca208b',
   APPLIANCE: 'photo-1630427804340-0b8524e85f25',
   CONSTRUCTION: 'photo-1504307651254-35680f356dfd',
@@ -18,7 +18,7 @@ const heroImages: Record<ServiceCategory, string> = {
 
 const categoryDescriptions: Record<ServiceCategory, string> = {
   MATTRESS: '자외선 살균과 고온 스팀 청소로 진드기, 알레르기 유발 물질과 세균을 제거합니다.',
-  SOFA_CARPET: '고압 스팀과 온수 추출 방식으로 패브릭 소파와 카페트를 깨끗하게 관리합니다.',
+  FABRIC: '고압 스팀과 온수 추출 방식으로 패브릭을 깨끗하게 관리합니다.',
   MOVE_IN: '이사 전후 새 보금자리의 구석구석을 꼼꼼하게 청소합니다.',
   APPLIANCE: '에어컨과 세탁기를 분해해 세척하고 위생적으로 재조립합니다.',
   CONSTRUCTION: '공사 후 남은 먼지와 페인트 자국, 잔여물을 전문적으로 제거합니다.',
@@ -47,12 +47,12 @@ export default function Services() {
             <Link
               key={cat}
               to={`/services/${cat.toLowerCase()}`}
-              className="group relative overflow-hidden rounded-xl bg-[#0B1F3A] aspect-[4/3] flex items-end"
+              className="relative overflow-hidden rounded-xl bg-[#0B1F3A] aspect-[4/3] flex items-end"
             >
               <img
                 src={`https://images.unsplash.com/${heroImages[cat]}?w=700&h=525&fit=crop&auto=format`}
                 alt={categoryLabels[cat]}
-                className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-40 group-hover:scale-105 transition-all duration-500"
+                className="absolute inset-0 w-full h-full object-cover opacity-50"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-[#0B1F3A]/20 to-transparent" />
               <div className="relative p-6">
@@ -61,7 +61,7 @@ export default function Services() {
                 </div>
                 <h3 className="text-xl font-bold text-white" style={{ fontFamily: 'Outfit' }}>{categoryLabels[cat]}</h3>
                 <p className="text-slate-300 text-sm mt-1 line-clamp-2">{categoryDescriptions[cat]}</p>
-                <div className="mt-3 text-xs text-white/60 group-hover:text-white/90 transition-colors flex items-center gap-1">
+                <div className="mt-3 text-xs text-white/60 flex items-center gap-1">
                   작업 사진 보기 →
                 </div>
               </div>
