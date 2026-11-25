@@ -12,6 +12,7 @@ export default function AdminPosts() {
   const deleteMutation = useMutation({
     mutationFn: deleteAdminBoard,
     onSuccess: () => {
+      if (page > 0 && boards?.content.length === 1) setPage((current) => current - 1);
       void queryClient.invalidateQueries({ queryKey: ['admin-boards'] });
       void queryClient.invalidateQueries({ queryKey: ['boards'] });
     },

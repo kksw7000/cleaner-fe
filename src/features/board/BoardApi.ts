@@ -37,16 +37,20 @@ export interface BoardPage {
 }
 
 /** 비로그인 방문자의 브라우저 ID를 로컬 저장소에 유지해 새로고침 후에도 같은 방문자로 식별합니다. */
-function getVisitorId(): string {
-  const storageKey = 'boardVisitorId';
-  const savedId = localStorage.getItem(storageKey);
-  if (savedId && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(savedId)) {
-    return savedId;
-  }
+function getVisitorId(): string | undefined {
+  try {
+    const storageKey = 'boardVisitorId';
+    const savedId = localStorage.getItem(storageKey);
+    if (savedId && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(savedId)) {
+      return savedId;
+    }
 
-  const visitorId = crypto.randomUUID();
-  localStorage.setItem(storageKey, visitorId);
-  return visitorId;
+    const visitorId = crypto.randomUUID();
+    localStorage.setItem(storageKey, visitorId);
+    return visitorId;
+  } catch {
+    return undefined;
+  }
 }
 
 /** 게시글 페이지를 검색어와 함께 공개 API에서 조회합니다. */
@@ -59,8 +63,9 @@ export async function getBoards(page: number, keyword: string): Promise<BoardPag
 
 /** 게시글 상세와 해당 게시글의 댓글을 함께 조회합니다. */
 export async function getBoard(id: number): Promise<BoardDetail> {
+  const visitorId = getVisitorId();
   const { data } = await apiClient.get<BoardDetail>(`/api/boards/${id}`, {
-    headers: { 'X-Visitor-Id': getVisitorId() },
+    ...(visitorId ? { headers: { 'X-Visitor-Id': visitorId } } : {}),
   });
   return data;
 }
@@ -114,5 +119,7 @@ export async function deleteComment(boardId: number, commentId: number): Promise
 
 /** 백엔드 LocalDateTime을 게시판에서 읽기 쉬운 한국어 날짜로 표시합니다. */
 export function formatBoardDate(value: string): string {
-  return new Intl.DateTimeFormat('ko-KR', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value));
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '날짜 정보 없음';
+  return new Intl.DateTimeFormat('ko-KR', { dateStyle: 'medium', timeStyle: 'short' }).format(date);
 }

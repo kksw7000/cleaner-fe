@@ -26,6 +26,7 @@ export default defineConfig(({ mode }) => {
         "/admin": {
           target: env.VITE_API_BASE_URL,
           changeOrigin: true,
+          bypass: (request) => request.headers.accept?.includes("text/html") ? "/index.html" : undefined,
         },
       },
     },

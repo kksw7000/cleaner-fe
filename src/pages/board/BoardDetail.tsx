@@ -8,6 +8,7 @@ import { useAuthStore } from '@/store/authStore';
 export default function BoardDetail() {
   const { id: idParam } = useParams();
   const id = Number(idParam);
+  const isValidBoardId = Number.isInteger(id) && id > 0;
   const navigate = useNavigate();
   const location = useLocation();
   const queryClient = useQueryClient();
@@ -18,7 +19,7 @@ export default function BoardDetail() {
   const [commentContent, setCommentContent] = useState(() => typeof routeState?.draftComment === 'string' ? routeState.draftComment : '');
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
   const [editingCommentContent, setEditingCommentContent] = useState('');
-  const boardQuery = useQuery({ queryKey: ['board', id], queryFn: () => getBoard(id), enabled: Number.isInteger(id) && id > 0 });
+  const boardQuery = useQuery({ queryKey: ['board', id], queryFn: () => getBoard(id), enabled: isValidBoardId });
   const refreshBoard = () => queryClient.invalidateQueries({ queryKey: ['board', id] });
   const updateBoardMutation = useMutation({ mutationFn: () => updateBoard(id, { ...editForm, notice: Boolean(boardQuery.data?.notice) }), onSuccess: () => { setEditing(false); void refreshBoard(); void queryClient.invalidateQueries({ queryKey: ['boards'] }); } });
   const deleteBoardMutation = useMutation({ mutationFn: () => deleteBoard(id), onSuccess: () => { void queryClient.invalidateQueries({ queryKey: ['boards'] }); navigate('/board'); } });
@@ -27,6 +28,7 @@ export default function BoardDetail() {
   const deleteCommentMutation = useMutation({ mutationFn: (commentId: number) => deleteComment(id, commentId), onSuccess: () => { void refreshBoard(); } });
   const post = boardQuery.data;
 
+  if (!isValidBoardId) return <div className="min-h-[50vh] flex flex-col items-center justify-center"><p role="alert" className="mb-4 text-slate-500">게시글을 불러오지 못했거나 존재하지 않습니다.</p><Link to="/board" className="text-teal-600 hover:underline">게시판으로 돌아가기</Link></div>;
   if (boardQuery.isPending) return <div role="status" className="min-h-[50vh] flex items-center justify-center text-slate-500">게시글을 불러오는 중입니다.</div>;
   if (boardQuery.isError || !post) return <div className="min-h-[50vh] flex flex-col items-center justify-center"><p role="alert" className="mb-4 text-slate-500">게시글을 불러오지 못했거나 존재하지 않습니다.</p><Link to="/board" className="text-teal-600 hover:underline">게시판으로 돌아가기</Link></div>;
 
@@ -51,15 +53,15 @@ export default function BoardDetail() {
         {editing ? <div className="space-y-4">
           <input aria-label="게시글 제목" value={editForm.title} onChange={(event) => setEditForm({ ...editForm, title: event.target.value })} className="w-full text-2xl font-bold border border-slate-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-teal-500" />
           <textarea aria-label="게시글 내용" rows={10} value={editForm.content} onChange={(event) => setEditForm({ ...editForm, content: event.target.value })} className="w-full border border-slate-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none leading-relaxed" />
-          <div className="flex gap-3"><button disabled={updateBoardMutation.isPending} onClick={() => updateBoardMutation.mutate()} className="px-5 py-2 bg-teal-600 text-white text-sm font-medium rounded-full disabled:opacity-50">저장</button><button onClick={() => setEditing(false)} className="px-5 py-2 border border-slate-200 text-slate-600 text-sm rounded-full">취소</button></div>
+          {updateBoardMutation.isError && <p role="alert" className="text-sm text-red-600">게시글을 수정하지 못했습니다.</p>}
+          <div className="flex gap-3"><button disabled={updateBoardMutation.isPending} onClick={() => updateBoardMutation.mutate()} className="px-5 py-2 bg-teal-600 text-white text-sm font-medium rounded-full disabled:opacity-50">저장</button><button onClick={() => { updateBoardMutation.reset(); setEditing(false); }} className="px-5 py-2 border border-slate-200 text-slate-600 text-sm rounded-full">취소</button></div>
         </div> : <>
           <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 leading-tight">{post.notice && <span className="mr-2 rounded bg-amber-100 px-2 py-1 align-middle text-xs text-amber-800">공지</span>}{post.title}</h1>
           <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
             <div className="flex items-center gap-3 text-sm text-slate-500"><div className="w-7 h-7 rounded-full bg-teal-100 flex items-center justify-center text-teal-700 font-bold text-xs">{post.authorName[0]}</div><span className="font-medium text-slate-700">{post.authorName}</span><span>·</span><time>{formatBoardDate(post.createdAt)}</time><span>·</span><span>👁 {post.viewCount}</span></div>
-            {isAuthor && <div className="flex gap-3 text-sm"><button onClick={() => { setEditForm({ title: post.title, content: post.content }); setEditing(true); }} className="text-slate-500 hover:text-teal-600 font-medium">수정</button></div>}
+            {isAuthor && <div className="flex gap-3 text-sm"><button onClick={() => { updateBoardMutation.reset(); setEditForm({ title: post.title, content: post.content }); setEditing(true); }} className="text-slate-500 hover:text-teal-600 font-medium">수정</button></div>}
             {canDeletePost && <button onClick={() => { if (confirm('이 게시글을 삭제하시겠습니까?')) deleteBoardMutation.mutate(); }} disabled={deleteBoardMutation.isPending} className="text-sm text-slate-500 hover:text-red-500 font-medium disabled:opacity-50">삭제</button>}
           </div>
-          {updateBoardMutation.isError && <p role="alert" className="mb-4 text-sm text-red-600">게시글을 수정하지 못했습니다.</p>}
           {deleteBoardMutation.isError && <p role="alert" className="mb-4 text-sm text-red-600">게시글을 삭제하지 못했습니다.</p>}
           <div className="prose prose-slate max-w-none">{post.content.split('\n').map((line, index) => <p key={index} className="text-slate-700 leading-relaxed mb-3 text-sm sm:text-base">{line || '\u00a0'}</p>)}</div>
         </>}
