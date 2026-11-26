@@ -134,8 +134,7 @@ export default function Landing() {
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-28 md:py-40">
           <div className="max-w-2xl">
-            <p className="text-xs font-semibold tracking-[0.2em] text-slate-400 mb-5">청만사 전문 청소 서비스</p>
-            <h1 className="text-5xl md:text-7xl font-black leading-[1.05] mb-6 tracking-tight" style={{ fontFamily: 'Outfit' }}>
+            <h1 className="text-4xl md:text-7xl font-black leading-[1.05] mb-6 tracking-tight" style={{ fontFamily: 'Outfit' }}>
               검증된 실력으로,<br />
               전문적으로,<br />
               <span className="text-white/60">완벽하게.</span>
@@ -159,7 +158,6 @@ export default function Landing() {
       <section className="py-20 bg-[#F8FAFC]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12">
-            <p className="text-xs font-semibold tracking-[0.2em] text-slate-400 mb-3">청만사를 선택하는 이유</p>
             <h2 className="text-3xl md:text-4xl font-black text-[#0B1F3A]" style={{ fontFamily: 'Outfit' }}>청만사 만의 차별점</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -179,7 +177,6 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-end justify-between mb-10">
             <div>
-              <p className="text-xs font-semibold tracking-[0.2em] text-slate-400 mb-2">고객 소통 공간</p>
               <h2 className="text-3xl md:text-4xl font-black text-white">게시판</h2>
             </div>
             <Link to="/board" className="text-sm text-slate-400 hover:text-white transition-colors hidden sm:block">게시판 전체 보기 →</Link>
