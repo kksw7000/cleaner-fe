@@ -28,6 +28,7 @@ export async function logoutFromServer(): Promise<void> {
   await apiClient.post('/api/auth/logout');
 }
 
+/** 인증된 회원의 최신 프로필을 조회해 로그인 직후 비어 있는 정보를 보완합니다. */
 export async function getCurrentProfile(): Promise<MyPageResponse> {
   const { data } = await apiClient.get<MyPageResponse>('/api/mypage');
   return data;

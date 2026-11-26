@@ -1,3 +1,4 @@
+/** 서비스 운영 정보와 고객센터 연락처를 페이지 하단에 표시합니다. */
 export default function Footer() {
   return (
     <footer className="border-t border-white/10 bg-[#0B1F3A] text-slate-300">

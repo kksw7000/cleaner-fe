@@ -4,6 +4,7 @@ import { services, categoryLabels, categoryIcons } from '@/data/mockData';
 import { categoryPhotos } from '@/data/photoData';
 import { useAuthStore } from '@/store/authStore';
 
+/** 목업 서비스 상세 정보와 예약 신청 폼을 표시합니다. */
 export default function ServiceDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ export default function ServiceDetail() {
 
   const photos = categoryPhotos[service.category];
 
+  /** 비회원은 현재 서비스 상세 경로를 보존해 로그인으로 보내고, 회원은 신청 완료를 표시합니다. */
   const handleBook = (e: React.FormEvent) => {
     e.preventDefault();
     if (!isLoggedIn) {

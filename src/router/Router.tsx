@@ -78,6 +78,7 @@ function AuthExpiryHandler() {
   return null;
 }
 
+/** 브라우저 뒤로 가기는 스크롤 위치를 유지하고 새 화면으로 이동할 때만 맨 위로 이동합니다. */
 function ScrollToTop() {
   const { pathname } = useLocation();
   const navigationType = useNavigationType();

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { mockUsers, type AdminUser } from '@/data/mockData';
 
+/** 목업 회원을 검색하고 화면 상태에서 삭제하는 관리자 프로토타입입니다. */
 export default function AdminMembers() {
   const [users, setUsers] = useState(mockUsers);
   const [search, setSearch] = useState('');
@@ -9,6 +10,7 @@ export default function AdminMembers() {
     !search || u.email.toLowerCase().includes(search.toLowerCase()) || u.nickname.toLowerCase().includes(search.toLowerCase())
   );
 
+  /** 실수로 삭제하지 않도록 확인한 뒤 목업 목록에서 회원을 제거합니다. */
   const handleDelete = (id: number) => {
     if (confirm('이 회원을 강제 탈퇴 처리하시겠습니까?')) {
       setUsers((prev) => prev.filter((u) => u.id !== id));

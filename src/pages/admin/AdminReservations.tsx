@@ -23,18 +23,21 @@ const statusLabels: Record<ReservationStatus | 'ALL', string> = {
   CANCELED: '취소',
 };
 
+/** 목업 예약을 상태별로 필터링하고 관리자 화면에서 상태를 진행합니다. */
 export default function AdminReservations() {
   const [list, setList] = useState(initial);
   const [filter, setFilter] = useState<ReservationStatus | 'ALL'>('ALL');
 
   const filtered = filter === 'ALL' ? list : list.filter((r) => r.status === filter);
 
+  /** 완료 가능한 상태 전이만 허용해 예약 상태를 한 단계 진행합니다. */
   const handleAdvance = (id: number, current: ReservationStatus) => {
     const next = nextStatus[current];
     if (!next) return;
     setList((prev) => prev.map((r) => r.id === id ? { ...r, status: next } : r));
   };
 
+  /** 선택한 목업 예약을 취소 상태로 표시합니다. */
   const handleCancel = (id: number) => {
     setList((prev) => prev.map((r) => r.id === id ? { ...r, status: 'CANCELED' } : r));
   };

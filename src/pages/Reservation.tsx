@@ -19,6 +19,7 @@ const serviceNames: Record<number, string> = {
   13: '유품 정리 및 정돈',
 };
 
+/** 목업 예약 신청 폼과 날짜 선택 달력을 제공하며, 실제 예약 API는 아직 연결하지 않습니다. */
 export default function Reservation() {
   const { isLoggedIn } = useAuthStore();
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ export default function Reservation() {
   const calendarDays = Array.from({ length: 42 }, (_, index) =>
     new Date(calendarMonth.getFullYear(), calendarMonth.getMonth(), 1 - calendarMonth.getDay() + index),
   );
+  /** 달력 날짜를 폼에 저장하는 ISO 날짜 형식으로 정규화합니다. */
   const formatDateValue = (date: Date) =>
     `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
   const selectedDateLabel = form.date
@@ -41,6 +43,7 @@ export default function Reservation() {
       .format(new Date(`${form.date}T00:00:00`))
     : '';
 
+  /** 비로그인·날짜 미선택 상태를 막고 유효한 목업 신청을 완료 상태로 전환합니다. */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!isLoggedIn) {

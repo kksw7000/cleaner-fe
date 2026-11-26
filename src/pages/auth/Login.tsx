@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '@/store/authStore';
 import { login as loginApi } from '@/api/AuthApi';
 
+/** 인증 후 요청한 화면으로 복귀하면서 회원 프로필을 보강하는 로그인 화면입니다. */
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -18,18 +19,21 @@ export default function Login() {
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  /** 입력을 검증하고 로그인·프로필 복구를 마친 뒤 목적지로 이동합니다. */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.email || !form.password) { setError('이메일과 비밀번호를 모두 입력해 주세요.'); return; }
     setError('');
     setIsSubmitting(true);
     try {
+      // 1. 로그인 API에서 토큰을 받습니다.
       const tokenResponse = await loginApi(form.email, form.password);
       const role = tokenResponse.role;
       // 로그인 직후에도 회원가입 시 저장한 닉네임을 표시하도록 서버 응답의 이름을 전달합니다.
       login(form.email, tokenResponse.accessToken, role, tokenResponse.name);
       // 마이페이지로 이동하기 전에 본인 프로필을 조회해 전화번호를 포함한 최신 정보를 채웁니다.
       await restoreSession(false);
+      // 로그인 전 작성하던 댓글 같은 임시 상태가 있으면 이동 목적지로 다시 전달합니다.
       navigate(from, { state: returnState });
     } catch {
       setError('로그인에 실패했습니다. 이메일과 비밀번호를 확인해 주세요.');

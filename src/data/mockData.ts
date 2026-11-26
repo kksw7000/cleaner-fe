@@ -1,3 +1,4 @@
+/** 화면 목업과 카테고리별 조회에서 공유하는 서비스 분류 키입니다. */
 export type ServiceCategory =
   | 'MATTRESS'
   | 'FABRIC'
@@ -9,6 +10,7 @@ export type ServiceCategory =
   | 'REGULAR_CLEANING'
   | 'ESTATE_CLEANING';
 
+/** 서비스 분류 키를 사용자가 읽을 한국어 이름으로 변환합니다. */
 export const categoryLabels: Record<ServiceCategory, string> = {
   MATTRESS: '매트리스',
   FABRIC: '패브릭 청소',
@@ -21,6 +23,7 @@ export const categoryLabels: Record<ServiceCategory, string> = {
   ESTATE_CLEANING: '유품 정리',
 };
 
+/** 분류별 메뉴와 카드에 표시할 아이콘입니다. */
 export const categoryIcons: Record<ServiceCategory, string> = {
   MATTRESS: '🛏',
   FABRIC: '🧶',
@@ -33,6 +36,7 @@ export const categoryIcons: Record<ServiceCategory, string> = {
   ESTATE_CLEANING: '🗂',
 };
 
+/** 서비스 소개와 예약 화면에서 사용하는 목업 상품 데이터 형태입니다. */
 export interface ServiceProduct {
   id: number;
   name: string;
@@ -42,6 +46,7 @@ export interface ServiceProduct {
   imageId: string;
 }
 
+/** 백엔드 서비스 API가 준비되기 전 서비스 화면에서 사용하는 예시 상품입니다. */
 export const services: ServiceProduct[] = [
   { id: 1, name: '매트리스 살균 청소', category: 'MATTRESS', description: '자외선 살균과 고온 스팀으로 매트리스의 진드기, 알레르기 유발 물질과 세균을 제거합니다.', price: 89000, imageId: 'photo-1631049307264-da0ec9d70304' },
   { id: 2, name: '매트리스 얼룩 제거', category: 'MATTRESS', description: '잘 지워지지 않는 얼룩과 냄새를 전문적으로 관리해 매트리스를 쾌적하게 되살립니다.', price: 59000, imageId: 'photo-1505693416388-ac5ce068fe85' },
@@ -58,8 +63,10 @@ export const services: ServiceProduct[] = [
   { id: 13, name: '유품 정리 및 정돈', category: 'ESTATE_CLEANING', description: '생활용품과 유품을 세심하게 분류하고 정리해 공간을 깨끗하게 정돈해 드립니다.', price: 150000, imageId: 'photo-1614771637369-ed94441a651c' },
 ];
 
+/** 목업 예약과 관리자 화면에서 공유하는 예약 상태 값입니다. */
 export type ReservationStatus = 'PENDING' | 'CONFIRMED' | 'COMPLETED' | 'CANCELED';
 
+/** 회원 예약 내역 화면이 사용하는 예약 예시 데이터의 형태입니다. */
 export interface Reservation {
   id: number;
   serviceId: number;
@@ -71,12 +78,14 @@ export interface Reservation {
   createdAt: string;
 }
 
+/** 실제 예약 API 연동 전 마이페이지에 표시하는 예시 예약입니다. */
 export const mockReservations: Reservation[] = [
   { id: 1, serviceId: 1, serviceName: '매트리스 살균 청소', reservationDate: '2026-09-25 10:00', address: '서울특별시 중구 세종대로 110, 4층', status: 'CONFIRMED', memo: '킹사이즈 매트리스입니다. 여분 커버를 준비해 주세요.', createdAt: '2026-09-17' },
   { id: 2, serviceId: 7, serviceName: '에어컨 청소', reservationDate: '2026-10-02 14:00', address: '서울특별시 중구 세종대로 110, 4층', status: 'PENDING', memo: '벽걸이형 2대', createdAt: '2026-09-16' },
   { id: 3, serviceId: 12, serviceName: '주 1회 정기 청소', reservationDate: '2026-09-10 09:00', address: '서울특별시 중구 세종대로 110, 4층', status: 'COMPLETED', memo: '', createdAt: '2026-09-05' },
 ];
 
+/** 홈 화면의 게시글 미리보기에서 사용하는 목업 게시글 형태입니다. */
 export interface BoardPost {
   id: number;
   title: string;
@@ -86,6 +95,7 @@ export interface BoardPost {
   createdAt: string;
 }
 
+/** 실제 게시판 목록 API와 구분해 홈 화면 미리보기에 사용하는 예시입니다. */
 export const mockPosts: BoardPost[] = [
   { id: 1, title: '패브릭 전문 청소는 얼마나 자주 해야 하나요?', content: '반려견 두 마리와 패브릭 제품을 함께 사용하고 있어요. 지난달에 청소를 맡겼는데 정말 만족스러워서 경험을 나누고, 다른 분들은 얼마나 자주 청소하시는지 궁금합니다.\n\n고온 스팀 방식으로 청소해 주셨고 패브릭이 새것처럼 깨끗해졌어요. 반려동물 냄새도 사라졌습니다!', writer: '소피', viewCount: 142, createdAt: '2026-09-15' },
   { id: 2, title: '입주 청소, 비용이 아깝지 않았어요', content: '새 아파트로 이사하면서 입주 청소를 예약했어요. 약속한 시간에 오셔서 네 시간 동안 구석구석 꼼꼼하게 청소해 주셨습니다.\n\n이전 거주자가 있던 집으로 이사하신다면 적극 추천합니다.', writer: '마크', viewCount: 98, createdAt: '2026-09-12' },
@@ -94,6 +104,7 @@ export const mockPosts: BoardPost[] = [
   { id: 5, title: '청소하는 동안 집에 있어야 하나요?', content: '평일 오전 9시부터 오후 5시까지 일하고 있어서 집에 없어도 청소가 가능한지 궁금합니다. 비밀번호 보관함을 이용해 서비스를 받아보신 분이 계실까요?', writer: '알렉스', viewCount: 55, createdAt: '2026-09-06' },
 ];
 
+/** 관리자 회원 목록 목업의 행에 필요한 회원 정보를 정의합니다. */
 export interface AdminUser {
   id: number;
   email: string;
@@ -104,6 +115,7 @@ export interface AdminUser {
   createdAt: string;
 }
 
+/** 관리자 회원 화면에서 API 연동 전 사용하는 예시 회원입니다. */
 export const mockUsers: AdminUser[] = [
   { id: 1, email: 'minsu.kim@email.com', nickname: '김민수', phone: '010-1234-5678', role: 'USER', provider: 'LOCAL', createdAt: '2026-08-10' },
   { id: 2, email: 'seoyeon.lee@email.com', nickname: '이서연', phone: '010-2345-6789', role: 'USER', provider: 'GOOGLE', createdAt: '2026-08-15' },
@@ -112,6 +124,7 @@ export const mockUsers: AdminUser[] = [
   { id: 5, email: 'admin@cleaner.com', nickname: '관리자', phone: '010-0000-0000', role: 'ADMIN', provider: 'LOCAL', createdAt: '2026-07-01' },
 ];
 
+/** 관리자 예약 화면의 목업 데이터이며 실제 예약 관리 API 응답이 아닙니다. */
 export const adminReservations = [
   { id: 1, userName: '김민수', email: 'minsu.kim@email.com', serviceName: '매트리스 살균 청소', reservationDate: '2026-09-25 10:00', address: '123 Maple St', status: 'CONFIRMED' as ReservationStatus, createdAt: '2026-09-17' },
   { id: 2, userName: '이서연', email: 'seoyeon.lee@email.com', serviceName: '에어컨 청소', reservationDate: '2026-10-02 14:00', address: '456 Oak Ave', status: 'PENDING' as ReservationStatus, createdAt: '2026-09-16' },

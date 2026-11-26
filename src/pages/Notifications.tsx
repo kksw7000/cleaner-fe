@@ -47,6 +47,7 @@ export default function Notifications() {
     queryFn: () => getNotifications(page),
     enabled: isLoggedIn,
   });
+  /** 읽음 변경 후 헤더 미리보기와 현재 페이지가 서버 데이터로 다시 동기화되게 합니다. */
   const invalidateNotifications = () => queryClient.invalidateQueries({ queryKey: notificationKeys.all });
   const markReadMutation = useMutation({
     mutationFn: markNotificationAsRead,
