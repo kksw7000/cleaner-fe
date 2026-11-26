@@ -3,14 +3,17 @@ import { services as initialServices, categoryLabels, categoryIcons, type Servic
 
 const categories = Object.keys(categoryLabels) as ServiceCategory[];
 
+/** 서비스 관리 API가 아직 없어 목업 상품을 브라우저 화면 상태에서 편집합니다. */
 export default function AdminServices() {
   const [list, setList] = useState(initialServices);
   const [showForm, setShowForm] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
   const [form, setForm] = useState({ name: '', category: 'MATTRESS' as ServiceCategory, description: '', price: '' });
 
+  /** 편집 모드에 따라 기존 목업을 갱신하거나 새 목업 상품을 추가합니다. */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // 숫자 입력 요소의 값은 문자열이므로 저장 시 상품 가격 타입으로 변환합니다.
     if (editId !== null) {
       setList((prev) => prev.map((s) => s.id === editId ? { ...s, ...form, price: Number(form.price) } : s));
       setEditId(null);
@@ -29,12 +32,14 @@ export default function AdminServices() {
     setShowForm(false);
   };
 
+  /** 선택한 상품의 값을 폼에 채우고 편집 모드로 전환합니다. */
   const handleEdit = (s: ServiceProduct) => {
     setForm({ name: s.name, category: s.category, description: s.description, price: String(s.price) });
     setEditId(s.id);
     setShowForm(true);
   };
 
+  /** 확인을 받은 경우에만 목업 서비스 목록에서 항목을 제거합니다. */
   const handleDelete = (id: number) => {
     if (confirm('이 서비스를 삭제하시겠습니까?')) {
       setList((prev) => prev.filter((s) => s.id !== id));

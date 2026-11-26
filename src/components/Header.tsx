@@ -13,6 +13,7 @@ import { logoutFromServer } from '@/api/AuthApi';
 
 const categories = Object.keys(categoryLabels) as ServiceCategory[];
 
+/** 공통 내비게이션과 로그인 회원의 알림 요약을 표시합니다. */
 export default function Header() {
   const { isLoggedIn, user, logout } = useAuthStore();
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ export default function Header() {
     queryFn: getNotificationHome,
     enabled: isLoggedIn,
   });
+  // 읽음 처리 후 헤더와 알림 보관함이 같은 최신 서버 상태를 보도록 관련 캐시를 갱신합니다.
   const invalidateNotifications = () => queryClient.invalidateQueries({ queryKey: notificationKeys.all });
   const markReadMutation = useMutation({
     mutationFn: markNotificationAsRead,
@@ -39,6 +41,7 @@ export default function Header() {
   });
 
   useEffect(() => {
+    // 드롭다운 바깥을 클릭하면 메뉴를 닫고, 언마운트 시 전역 이벤트 리스너를 정리합니다.
     const handleClick = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setServicesOpen(false);
@@ -51,7 +54,9 @@ export default function Header() {
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
 
+  /** 로컬 인증 상태를 먼저 정리해 즉시 화면을 전환하고 서버 쿠키 만료도 요청합니다. */
   const handleLogout = () => {
+    // 다른 계정으로 전환할 때 이전 회원의 알림 캐시가 노출되지 않도록 먼저 제거합니다.
     queryClient.removeQueries({ queryKey: notificationKeys.all });
     logout();
     void logoutFromServer().catch((error: unknown) => {
@@ -62,8 +67,10 @@ export default function Header() {
     setNotificationsOpen(false);
   };
 
+  /** 현재 경로와 정확히 일치하는 메뉴에 활성 스타일을 적용합니다. */
   const isActive = (path: string) => location.pathname === path;
 
+  /** 현재 경로에 맞는 내비게이션 링크 스타일을 계산합니다. */
   const navLinkCls = (path: string) =>
     `text-sm transition-colors ${isActive(path) ? 'text-white font-semibold' : 'text-slate-300 hover:text-white'}`;
 

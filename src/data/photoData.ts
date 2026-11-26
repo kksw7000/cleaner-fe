@@ -1,6 +1,6 @@
 import type { ServiceCategory } from '@/data/mockData';
 
-// Curated Unsplash photo IDs per category
+/** 카테고리 화면에서 작업 사진을 페이지 단위로 보여주는 이미지 경로 목록입니다. */
 export const categoryPhotos: Record<ServiceCategory, string[]> = {
   MATTRESS: [
     'photo-1631049307264-da0ec9d70304',
@@ -161,7 +161,7 @@ export const categoryPhotos: Record<ServiceCategory, string[]> = {
   ],
 };
 
-// Large pool of cleaning/interior photos for homepage slideshow
+/** 홈 화면 사진 영역에서 반복 재생할 청소·실내 이미지 목록입니다. */
 export const slideshowPhotos = [
   'photo-1581578731548-c64695cc6952',
   'photo-1563453392212-326f5e854473',

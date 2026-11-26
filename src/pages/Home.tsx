@@ -44,6 +44,7 @@ const row2Photos = [
   '/images/services/coating/광택9.jpg',
 ];
 
+/** 현장 작업 사진을 양방향으로 흐르는 두 줄의 이미지 띠로 보여줍니다. */
 function OnSiteStrip() {
   // 배열을 두 번 이어 붙여 애니메이션이 끊기지 않도록 합니다.
   const r1 = [...row1Photos, ...row1Photos];
@@ -112,8 +113,10 @@ const features = [
   { title: '만족 보장 서비스', desc: '서비스 결과에 만족하지 못하셨다면 추가 비용 없이 불편 사항을 확인하고 조치해 드립니다.' },
 ];
 
+/** 서비스 소개, 작업 사례, 목업 게시글을 한 화면에 모은 홈 페이지입니다. */
 export default function Landing() {
   const { isLoggedIn } = useAuthStore();
+  // 비로그인 사용자는 로그인 후 예약 화면으로 돌아오도록 원래 목적지를 전달합니다.
   const bookingPath = isLoggedIn ? '/reservation' : '/login';
   const bookingState = isLoggedIn ? undefined : { from: '/reservation' };
 

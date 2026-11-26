@@ -17,12 +17,15 @@ const categoryDescriptions: Record<ServiceCategory, string> = {
   ESTATE_CLEANING: '유품과 생활용품을 세심하게 분류·정리하고 공간을 깨끗하게 정돈해 드립니다.',
 };
 
+/** 공통 카테고리 화면을 특정 경로에 재사용할 때 선택적으로 고정 분류를 전달합니다. */
 interface CategoryPageProps {
   categoryOverride?: ServiceCategory;
 }
 
+/** 분류 설명, 관련 목업 서비스, 실패 이미지를 제외한 작업 사진을 보여줍니다. */
 export default function CategoryPage({ categoryOverride }: CategoryPageProps) {
   const { category } = useParams<{ category: string }>();
+  // 개별 서비스 경로는 고정 분류를 우선하고, 동적 경로는 URL 값을 분류 키로 사용합니다.
   const catKey = categoryOverride ?? (category?.toUpperCase() as ServiceCategory) ?? null;
 
   const [page, setPage] = useState(1);
@@ -43,6 +46,7 @@ export default function CategoryPage({ categoryOverride }: CategoryPageProps) {
   const visiblePhotos = photos.filter((id) => id && !failedPhotoIds.includes(id));
   const totalPages = Math.ceil(visiblePhotos.length / PHOTOS_PER_PAGE);
   // 이미지 로드 실패로 사진 수가 줄어도 현재 페이지를 유효한 범위에 유지합니다.
+  // 이미지 로드 실패 후 페이지 수가 줄어도 slice 범위가 마지막 페이지를 넘지 않게 합니다.
   const currentPage = Math.min(Math.max(page, 1), Math.max(totalPages, 1));
   const pagePhotos = visiblePhotos.slice((currentPage - 1) * PHOTOS_PER_PAGE, currentPage * PHOTOS_PER_PAGE);
   const relatedServices = services.filter((s) => s.category === catKey);

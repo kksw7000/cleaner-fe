@@ -20,6 +20,7 @@ const statusLabels: Record<ReservationStatus, string> = {
 
 type Tab = 'profile' | 'reservations';
 
+/** 목업 예약과 프로필 정보를 확인하고 수정할 수 있는 회원 페이지입니다. */
 export default function MyPage() {
   const { isLoggedIn, user, updateUser, logout } = useAuthStore();
   const navigate = useNavigate();
@@ -28,10 +29,13 @@ export default function MyPage() {
   const [form, setForm] = useState({ nickname: user?.nickname || '', phone: user?.phone || '' });
   const [filterStatus, setFilterStatus] = useState<ReservationStatus | 'ALL'>('ALL');
 
+  // 비회원에게 개인 정보가 보이지 않도록 로그인 화면으로 보냅니다.
   if (!isLoggedIn) { navigate('/login'); return null; }
 
+  /** 입력한 프로필 변경분을 공용 인증 스토어에 반영합니다. */
   const handleSave = () => { updateUser(form); setEditing(false); };
   const filtered = filterStatus === 'ALL' ? mockReservations : mockReservations.filter((r) => r.status === filterStatus);
+  /** 화면 상태를 먼저 로그아웃으로 바꾸고 Refresh Token 쿠키 만료를 서버에 요청합니다. */
   const handleLogout = () => {
     logout();
     void logoutFromServer().catch((error: unknown) => {

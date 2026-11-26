@@ -21,6 +21,7 @@ const statusLabels: Record<string, string> = {
   CANCELED: '취소',
 };
 
+/** 목업 회원·서비스·게시글·예약 수치를 관리자 대시보드에 요약합니다. */
 export default function AdminDashboard() {
   const pending = adminReservations.filter((r) => r.status === 'PENDING').length;
   const confirmed = adminReservations.filter((r) => r.status === 'CONFIRMED').length;

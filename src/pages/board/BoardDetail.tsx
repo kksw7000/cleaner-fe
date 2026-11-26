@@ -20,6 +20,8 @@ export default function BoardDetail() {
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
   const [editingCommentContent, setEditingCommentContent] = useState('');
   const boardQuery = useQuery({ queryKey: ['board', id], queryFn: () => getBoard(id), enabled: isValidBoardId });
+
+  /** 게시글 변경 후 상세 데이터와 댓글을 서버에서 다시 받아옵니다. */
   const refreshBoard = () => queryClient.invalidateQueries({ queryKey: ['board', id] });
   const updateBoardMutation = useMutation({ mutationFn: () => updateBoard(id, { ...editForm, notice: Boolean(boardQuery.data?.notice) }), onSuccess: () => { setEditing(false); void refreshBoard(); void queryClient.invalidateQueries({ queryKey: ['boards'] }); } });
   const deleteBoardMutation = useMutation({ mutationFn: () => deleteBoard(id), onSuccess: () => { void queryClient.invalidateQueries({ queryKey: ['boards'] }); navigate('/board'); } });
@@ -34,8 +36,14 @@ export default function BoardDetail() {
 
   const isAuthor = user?.id === post.authorId;
   const canDeletePost = isAuthor || user?.role === 'ADMIN';
+
+  /** 댓글 작성자만 댓글 내용을 수정할 수 있는지 판별합니다. */
   const canManageComment = (comment: BoardComment) => isLoggedIn && user?.id === comment.authorId;
+
+  /** 댓글 작성자 또는 관리자가 댓글을 삭제할 수 있는지 판별합니다. */
   const canDeleteComment = (comment: BoardComment) => canManageComment(comment) || user?.role === 'ADMIN';
+  
+  /** 비로그인 사용자의 댓글 초안을 보존해 로그인으로 보내고, 인증된 경우 댓글을 등록합니다. */
   const handleCommentSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     if (!isLoggedIn) {

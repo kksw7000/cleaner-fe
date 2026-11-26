@@ -9,9 +9,11 @@ const navItems = [
   { to: '/admin/reservations', label: '예약 관리', icon: '📅', end: false },
 ];
 
+/** 관리자 공통 내비게이션과 하위 화면 영역을 구성합니다. */
 export default function AdminLayout() {
   const { user, isLoggedIn } = useAuthStore();
 
+  // 화면 접근은 편의상 먼저 막고, 실제 권한 검증은 반드시 서버에서도 수행해야 합니다.
   if (!isLoggedIn || user?.role !== 'ADMIN') {
     return <Navigate to="/login" replace />;
   }

@@ -28,6 +28,7 @@ const categoryDescriptions: Record<ServiceCategory, string> = {
   ESTATE_CLEANING: '유품과 생활용품을 정리하고 공간을 세심하게 청소합니다.',
 };
 
+/** 지원 서비스 분류와 목업 소개 문구를 카드 목록으로 보여줍니다. */
 export default function Services() {
   return (
     <div className="bg-white">

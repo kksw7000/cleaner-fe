@@ -28,6 +28,7 @@ const signupFields: SignupField[] = [
   { label: '비밀번호 확인', type: 'password', key: 'confirm', placeholder: '비밀번호를 다시 입력하세요' },
 ];
 
+/** Axios 응답 코드를 사용자에게 조치 방법이 보이는 회원가입 안내로 바꿉니다. */
 function getSignupErrorMessage(error: unknown): string {
   if (!axios.isAxiosError(error)) {
     return '회원가입 중 오류가 발생했습니다. 입력한 정보를 확인해 주세요.';
@@ -54,12 +55,14 @@ function getSignupErrorMessage(error: unknown): string {
   return '서버 오류로 회원가입에 실패했습니다. 잠시 후 다시 시도해 주세요.';
 }
 
+/** 입력값을 검사한 뒤 백엔드 회원가입 API를 호출하는 화면입니다. */
 export default function Signup() {
   const navigate = useNavigate();
   const [form, setForm] = useState<SignupForm>({ email: '', password: '', confirm: '', nickname: '', phone: '' });
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  /** 비밀번호 제약을 먼저 확인해 유효한 정보만 서버로 보내고 결과에 따라 이동합니다. */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (form.password !== form.confirm) { setError('비밀번호가 일치하지 않습니다.'); return; }

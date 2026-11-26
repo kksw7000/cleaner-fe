@@ -42,6 +42,7 @@ export function useNotificationStream(): void {
       void queryClient.invalidateQueries({ queryKey: notificationKeys.all });
     };
 
+    // 연결이 끊기면 대기 시간을 늘려 재시도해 서버 장애 중 과도한 요청을 막습니다.
     const connect = async () => {
       let retryDelay = 1000;
 
@@ -63,6 +64,7 @@ export function useNotificationStream(): void {
           });
 
           if (response.status === 401) {
+            // 한 연결에서 토큰 갱신은 한 번만 허용해 무한 갱신 반복을 방지합니다.
             if (refreshedAfterUnauthorized) {
               throw new Error('Notification stream remained unauthorized after token refresh');
             }
@@ -85,6 +87,7 @@ export function useNotificationStream(): void {
           let buffer = '';
           let frame = '';
 
+          // 네트워크 청크는 SSE 이벤트 경계와 일치하지 않으므로 빈 줄까지 데이터를 모읍니다.
           while (!controller.signal.aborted) {
             const { done, value } = await reader.read();
             if (done) {
