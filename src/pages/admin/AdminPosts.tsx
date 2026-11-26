@@ -25,7 +25,7 @@ export default function AdminPosts() {
       <form onSubmit={(event) => { event.preventDefault(); setPage(0); setKeyword(searchInput.trim()); }} className="mb-6 flex max-w-lg gap-2">
         <label htmlFor="admin-board-search" className="sr-only">게시글 제목 또는 작성자 검색</label>
         <input id="admin-board-search" type="search" placeholder="게시글 제목 검색" value={searchInput} onChange={(event) => setSearchInput(event.target.value)} className="w-full border border-slate-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" />
-        <button className="rounded-lg bg-[#0B1F3A] px-4 text-sm font-semibold text-white">검색</button>
+        <button className="shrink-0 whitespace-nowrap rounded-lg bg-[#0B1F3A] px-4 py-2 text-sm font-semibold text-white">검색</button>
       </form>
       {boardsQuery.isPending && <p role="status" className="py-12 text-center text-slate-500">게시글을 불러오는 중입니다.</p>}
       {boardsQuery.isError && <p role="alert" className="py-12 text-center text-red-600">게시글을 불러오지 못했습니다.</p>}

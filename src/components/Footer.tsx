@@ -2,7 +2,7 @@
 export default function Footer() {
   return (
     <footer className="border-t border-white/10 bg-[#0B1F3A] text-slate-300">
-      <div className="mx-auto w-full px-5 py-8 text-[11px] leading-relaxed sm:px-6 lg:px-10">
+      <div className="mx-auto w-full max-w-7xl px-4 py-8 text-[11px] leading-relaxed sm:px-6">
         <div className="space-y-1">
           <div>
             고객센터 :{' '}

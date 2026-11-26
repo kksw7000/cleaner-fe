@@ -23,7 +23,7 @@ export default function BoardWrite() {
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
-        <Link to="/board" className="text-sm text-slate-400 hover:text-teal-600 transition-colors inline-flex items-center gap-1 mb-8">← 게시판으로 돌아가기</Link>
+        <Link to="/board" className="text-md text-slate-400 hover:text-teal-600 transition-colors inline-flex items-center gap-1 mb-8">← 게시판으로 돌아가기</Link>
         <h1 className="text-2xl font-bold text-slate-900 mb-6">새 글 작성</h1>
         <form onSubmit={(event) => { event.preventDefault(); createMutation.mutate(); }} className="space-y-4">
           <div><label htmlFor="post-title" className="text-xs font-medium text-slate-500 block mb-1">제목</label><input id="post-title" required maxLength={100} placeholder="게시글 제목을 입력하세요" value={form.title} onChange={(event) => setForm({ ...form, title: event.target.value })} className="w-full border border-slate-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500" /></div>
